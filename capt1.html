@@ -1,0 +1,2229 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Modelos estacionarios – series_tiempo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./summary.html" rel="next">
+<link href="./intro.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./capt1.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Modelos estacionarios</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">series_tiempo</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefacio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./capt1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Modelos estacionarios</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#procesos-estacionarios" id="toc-procesos-estacionarios" class="nav-link active" data-scroll-target="#procesos-estacionarios"><span class="header-section-number">2.1</span> Procesos estacionarios</a>
+  <ul class="collapse">
+  <li><a href="#estacionariedad-estricta" id="toc-estacionariedad-estricta" class="nav-link" data-scroll-target="#estacionariedad-estricta"><span class="header-section-number">2.1.1</span> Estacionariedad estricta</a></li>
+  <li><a href="#estacionariedad-débil" id="toc-estacionariedad-débil" class="nav-link" data-scroll-target="#estacionariedad-débil"><span class="header-section-number">2.1.2</span> Estacionariedad débil</a></li>
+  <li><a href="#ejemplo-de-gráfica-de-yahoo-finance" id="toc-ejemplo-de-gráfica-de-yahoo-finance" class="nav-link" data-scroll-target="#ejemplo-de-gráfica-de-yahoo-finance"><span class="header-section-number">2.1.3</span> Ejemplo de gráfica de yahoo finance</a></li>
+  </ul></li>
+  <li><a href="#la-autocovarianza-la-autocorrelación-y-el-correlograma" id="toc-la-autocovarianza-la-autocorrelación-y-el-correlograma" class="nav-link" data-scroll-target="#la-autocovarianza-la-autocorrelación-y-el-correlograma"><span class="header-section-number">3</span> La autocovarianza, la autocorrelación y el correlograma</a>
+  <ul class="collapse">
+  <li><a href="#el-proceso-de-ruido-blanco" id="toc-el-proceso-de-ruido-blanco" class="nav-link" data-scroll-target="#el-proceso-de-ruido-blanco"><span class="header-section-number">3.1</span> El proceso de ruido blanco</a></li>
+  <li><a href="#pruebas-de-autocorrelación" id="toc-pruebas-de-autocorrelación" class="nav-link" data-scroll-target="#pruebas-de-autocorrelación"><span class="header-section-number">3.2</span> Pruebas de autocorrelación</a>
+  <ul class="collapse">
+  <li><a href="#ejemplo" id="toc-ejemplo" class="nav-link" data-scroll-target="#ejemplo"><span class="header-section-number">3.2.1</span> Ejemplo</a></li>
+  </ul></li>
+  <li><a href="#pruebas-de-autocorrelación-los-métodos-de-box-pierce-y-ljung-box" id="toc-pruebas-de-autocorrelación-los-métodos-de-box-pierce-y-ljung-box" class="nav-link" data-scroll-target="#pruebas-de-autocorrelación-los-métodos-de-box-pierce-y-ljung-box"><span class="header-section-number">3.3</span> Pruebas de autocorrelación: los métodos de Box-Pierce y Ljung-Box</a>
+  <ul class="collapse">
+  <li><a href="#ejemplo-1" id="toc-ejemplo-1" class="nav-link" data-scroll-target="#ejemplo-1"><span class="header-section-number">3.3.1</span> Ejemplo</a></li>
+  </ul></li>
+  <li><a href="#ejemplos-con-r-y-bases-de-datos-sobre-las-pruebas-de-autocorrelación" id="toc-ejemplos-con-r-y-bases-de-datos-sobre-las-pruebas-de-autocorrelación" class="nav-link" data-scroll-target="#ejemplos-con-r-y-bases-de-datos-sobre-las-pruebas-de-autocorrelación"><span class="header-section-number">3.4</span> Ejemplos con R y bases de datos sobre las pruebas de autocorrelación</a></li>
+  <li><a href="#modelos-de-medias-móviles" id="toc-modelos-de-medias-móviles" class="nav-link" data-scroll-target="#modelos-de-medias-móviles"><span class="header-section-number">3.5</span> Modelos de medias móviles</a></li>
+  <li><a href="#determinación-de-la-función-de-autocorrelación" id="toc-determinación-de-la-función-de-autocorrelación" class="nav-link" data-scroll-target="#determinación-de-la-función-de-autocorrelación"><span class="header-section-number">3.6</span> Determinación de la función de autocorrelación</a>
+  <ul class="collapse">
+  <li><a href="#determinación-de-la-media" id="toc-determinación-de-la-media" class="nav-link" data-scroll-target="#determinación-de-la-media"><span class="header-section-number">3.6.1</span> Determinación de la media</a></li>
+  <li><a href="#determinación-de-la-varianza" id="toc-determinación-de-la-varianza" class="nav-link" data-scroll-target="#determinación-de-la-varianza"><span class="header-section-number">3.6.2</span> Determinación de la varianza</a></li>
+  <li><a href="#calculo-de-autocorrelaciones" id="toc-calculo-de-autocorrelaciones" class="nav-link" data-scroll-target="#calculo-de-autocorrelaciones"><span class="header-section-number">3.6.3</span> Calculo de autocorrelaciones</a></li>
+  <li><a href="#ejemplo-2" id="toc-ejemplo-2" class="nav-link" data-scroll-target="#ejemplo-2"><span class="header-section-number">3.6.4</span> Ejemplo</a></li>
+  </ul></li>
+  <li><a href="#modelos-autorregresivos-ar" id="toc-modelos-autorregresivos-ar" class="nav-link" data-scroll-target="#modelos-autorregresivos-ar"><span class="header-section-number">3.7</span> 3. Modelos autorregresivos (AR)</a>
+  <ul class="collapse">
+  <li><a href="#estacionariedad-de-procesos-arp" id="toc-estacionariedad-de-procesos-arp" class="nav-link" data-scroll-target="#estacionariedad-de-procesos-arp"><span class="header-section-number">3.7.1</span> 3.1 Estacionariedad de procesos AR(p)</a></li>
+  <li><a href="#obtención-de-la-varianza" id="toc-obtención-de-la-varianza" class="nav-link" data-scroll-target="#obtención-de-la-varianza"><span class="header-section-number">3.7.2</span> Obtención de la varianza</a></li>
+  <li><a href="#obtención-de-la-autocovarianzas" id="toc-obtención-de-la-autocovarianzas" class="nav-link" data-scroll-target="#obtención-de-la-autocovarianzas"><span class="header-section-number">3.7.3</span> Obtención de la autocovarianzas</a></li>
+  <li><a href="#obtención-de-las-autocorrelaciones" id="toc-obtención-de-las-autocorrelaciones" class="nav-link" data-scroll-target="#obtención-de-las-autocorrelaciones"><span class="header-section-number">3.7.4</span> Obtención de las autocorrelaciones</a></li>
+  <li><a href="#ejemplo-3" id="toc-ejemplo-3" class="nav-link" data-scroll-target="#ejemplo-3"><span class="header-section-number">3.7.5</span> Ejemplo</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#tarea" id="toc-tarea" class="nav-link" data-scroll-target="#tarea"><span class="header-section-number">4</span> Tarea</a></li>
+  <li><a href="#modelo-autorregresivo-de-medias-móviles-arma" id="toc-modelo-autorregresivo-de-medias-móviles-arma" class="nav-link" data-scroll-target="#modelo-autorregresivo-de-medias-móviles-arma"><span class="header-section-number">5</span> Modelo autorregresivo de medias móviles (ARMA)</a></li>
+  <li><a href="#simulación-de-modelos" id="toc-simulación-de-modelos" class="nav-link" data-scroll-target="#simulación-de-modelos"><span class="header-section-number">6</span> Simulación de modelos</a>
+  <ul class="collapse">
+  <li><a href="#ejemplo-para-el-modelo-arma" id="toc-ejemplo-para-el-modelo-arma" class="nav-link" data-scroll-target="#ejemplo-para-el-modelo-arma"><span class="header-section-number">6.1</span> Ejemplo para el modelo ARMA</a></li>
+  </ul></li>
+  <li><a href="#tarea-1" id="toc-tarea-1" class="nav-link" data-scroll-target="#tarea-1"><span class="header-section-number">7</span> Tarea:</a></li>
+  <li><a href="#criterios-de-información" id="toc-criterios-de-información" class="nav-link" data-scroll-target="#criterios-de-información"><span class="header-section-number">8</span> Criterios de información</a>
+  <ul class="collapse">
+  <li><a href="#ejemplo-4" id="toc-ejemplo-4" class="nav-link" data-scroll-target="#ejemplo-4"><span class="header-section-number">8.1</span> Ejemplo:</a></li>
+  </ul></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">9</span> </a></li>
+  <li><a href="#pronosticos" id="toc-pronosticos" class="nav-link" data-scroll-target="#pronosticos"><span class="header-section-number">10</span> Pronosticos</a></li>
+  <li><a href="#evaluación-de-los-pronósticos" id="toc-evaluación-de-los-pronósticos" class="nav-link" data-scroll-target="#evaluación-de-los-pronósticos"><span class="header-section-number">11</span> Evaluación de los pronósticos</a>
+  <ul class="collapse">
+  <li><a href="#la-media-de-los-errores-al-cuadrado-mean-square-error-mse" id="toc-la-media-de-los-errores-al-cuadrado-mean-square-error-mse" class="nav-link" data-scroll-target="#la-media-de-los-errores-al-cuadrado-mean-square-error-mse"><span class="header-section-number">11.1</span> La media de los errores al cuadrado (Mean Square Error-MSE)</a></li>
+  <li><a href="#la-media-absoluta-de-los-errores-mean-absolute-error-mae" id="toc-la-media-absoluta-de-los-errores-mean-absolute-error-mae" class="nav-link" data-scroll-target="#la-media-absoluta-de-los-errores-mean-absolute-error-mae"><span class="header-section-number">11.2</span> La media absoluta de los errores (Mean Absolute Error-MAE)</a></li>
+  <li><a href="#la-media-absoluta-de-errores-porcentuales-mean-absolute-percentage-error-mape" id="toc-la-media-absoluta-de-errores-porcentuales-mean-absolute-percentage-error-mape" class="nav-link" data-scroll-target="#la-media-absoluta-de-errores-porcentuales-mean-absolute-percentage-error-mape"><span class="header-section-number">11.3</span> La media absoluta de errores porcentuales (Mean Absolute Percentage Error-MAPE)</a></li>
+  </ul></li>
+  <li><a href="#metodología-de-box-jenkings" id="toc-metodología-de-box-jenkings" class="nav-link" data-scroll-target="#metodología-de-box-jenkings"><span class="header-section-number">12</span> Metodología de Box-Jenkings</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Modelos estacionarios</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="procesos-estacionarios" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="procesos-estacionarios"><span class="header-section-number">2.1</span> Procesos estacionarios</h2>
+<p>Un concepto clave en los modelos de series de tiempo es el conocido como <em>procesos estocásticos</em>. Un proceso estocástico es una secuencia de números aleatorios. El proceso estocásticos se escribirá como <span class="math inline">\(y_i\)</span> <span class="math inline">\(\forall\)</span> <span class="math inline">\(i=1,2,...T\)</span> Si este índice representa el tiempo el proceso estocástico se llamará <strong>serie de tiempo</strong>. Si se asigna un posible valor de <span class="math inline">\(y\)</span> por cada <span class="math inline">\(i\)</span> se estará construyendo una posible <strong>realización</strong> del proceso estocástico.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># carga de datos del libro de Wooldridge</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"phillips"</span>, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">package =</span> <span class="st">"wooldridge"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(phillips)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   56 obs. of  7 variables:
+ $ year  : int  1948 1949 1950 1951 1952 1953 1954 1955 1956 1957 ...
+ $ unem  : num  3.8 5.9 5.3 3.3 3 ...
+ $ inf   : num  8.1 -1.2 1.3 7.9 1.9 ...
+ $ inf_1 : num  NA 8.1 -1.2 1.3 7.9 ...
+ $ unem_1: num  NA 3.8 5.9 5.3 3.3 ...
+ $ cinf  : num  NA -9.3 2.5 6.6 -6 ...
+ $ cunem : num  NA 2.1 -0.6 -2 -0.3 ...
+ - attr(*, "time.stamp")= chr "25 Jun 2011 23:03"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(phillips)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  year unem  inf inf_1 unem_1 cinf      cunem
+1 1948  3.8  8.1    NA     NA   NA         NA
+2 1949  5.9 -1.2   8.1    3.8 -9.3  2.1000001
+3 1950  5.3  1.3  -1.2    5.9  2.5 -0.5999999
+4 1951  3.3  7.9   1.3    5.3  6.6 -2.0000002
+5 1952  3.0  1.9   7.9    3.3 -6.0 -0.3000000
+6 1953  2.9  0.8   1.9    3.0 -1.1 -0.0999999</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(phillips<span class="sc">$</span>year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+1948 1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960 1961 1962 1963 
+   1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
+1964 1965 1966 1967 1968 1969 1970 1971 1972 1973 1974 1975 1976 1977 1978 1979 
+   1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
+1980 1981 1982 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993 1994 1995 
+   1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
+1996 1997 1998 1999 2000 2001 2002 2003 
+   1    1    1    1    1    1    1    1 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>unem.ts <span class="ot">&lt;-</span><span class="fu">ts</span>(phillips[,<span class="dv">2</span>], </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">start =</span> <span class="dv">1948</span>, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">frequency =</span> <span class="dv">1</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(unem.ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "ts"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(unem.ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.633929</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(unem.ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"barium"</span>, </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">package =</span> <span class="st">"wooldridge"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>chnimp.ts <span class="ot">&lt;-</span><span class="fu">ts</span>(barium[,<span class="dv">1</span>], </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1978</span>, <span class="dv">02</span>), </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(chnimp.ts, </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"volumen de importaciones de cloruro de bario de China"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Volumen de cloruro de bario"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"tiempo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">decompose</span>(chnimp.ts))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-1-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carga de datos del libro de Cowpertwait &amp; Meltcalfe</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>www <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/dallascard/Introductory_Time_Series_with_R_datasets/master/Maine.dat"</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>Maine.moth <span class="ot">&lt;-</span><span class="fu">read.table</span>(www, <span class="at">header =</span> T)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>Maine.moth.ts <span class="ot">&lt;-</span><span class="fu">ts</span>(Maine.moth<span class="sc">$</span>unemploy, </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1996</span>,<span class="dv">1</span>),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(Maine.moth.ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-1-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A continuación podemos obtener información del <a href="https://datos.bancomundial.org/">Banco Mundial</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># librerias</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(WDI, </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>               tidyverse)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>paises <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"BOL"</span>, <span class="st">"BRA"</span>, <span class="st">"CHL"</span>, <span class="st">"COL"</span>, <span class="st">"ECU"</span>, <span class="st">"PER"</span>, <span class="st">"PRY"</span>, <span class="st">"URY"</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>variables <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"FP.CPI.TOTL.ZG"</span>,  <span class="co"># Inflación (índice de precios al consumidor)</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>               <span class="st">"SL.UEM.TOTL.ZS"</span>,  <span class="co"># Tasa de desempleo</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>               <span class="st">"NE.IMP.GNFS.ZS"</span>,  <span class="co"># Importaciones (% del PIB)</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>               <span class="st">"NE.EXP.GNFS.ZS"</span>,  <span class="co"># Exportaciones (% del PIB)</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>               <span class="st">"NY.GDP.MKTP.CD"</span>)  <span class="co"># PIB (en USD corrientes)</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>desEc <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">country =</span> paises, </span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">indicator =</span> variables, </span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">start =</span> <span class="dv">1990</span>, </span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">end =</span> <span class="dv">2023</span>)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>desEc <span class="ot">&lt;-</span> desEc[,<span class="dv">3</span><span class="sc">:</span><span class="dv">9</span>]</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(desEc) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"pais"</span>, </span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"año"</span>, </span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"inflacion"</span>, </span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"desempleo"</span>, </span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"impor"</span>, </span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"expor"</span>, </span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"PIB"</span>)</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>desempleo <span class="ot">&lt;-</span> desEc <span class="sc">%&gt;%</span> </span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(pais<span class="sc">==</span><span class="st">"ECU"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(desempleo)</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>desempleo <span class="ot">&lt;-</span> <span class="fu">ts</span>(desempleo, </span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>                <span class="at">start =</span> <span class="dv">1990</span>, </span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>                <span class="at">frequency =</span> <span class="dv">1</span>)</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(desempleo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Tasa de desempleo para el Ecuador-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La realidad no se muestra de distintas maneras: <strong>solo existe una realización de la realidad</strong>. Esto implica un limitación que se debe solucionar. Esto nos lleva a analizar el concepto de <strong>estacionariedad</strong>, que significa que todas las observaciones de la serie de tiempo provienen de la misma distribución de probabiliadad y que, a su vez el proceso no es muy persistente, cada observación contendrá información valorable que no está presente en ninguna de las otras observaciones, por lo que los estadísticos obtenidos de las observaciones serán consistentes con sus respectivos parámetros poblacionales. Por ejemplo, la media de estas observaciones en el tiempo será consistente con la media poblacional.</p>
+<p>El concepto de <strong>estacionariedad</strong> tiene dos formas, la estricta y la débil</p>
+<section id="estacionariedad-estricta" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="estacionariedad-estricta"><span class="header-section-number">2.1.1</span> Estacionariedad estricta</h3>
+<p>Un proceso estocástico <span class="math inline">\({y_i, i=1,2,...,T}\)</span> es <strong>estrictamente estacionario</strong> si, para un número real finito <span class="math inline">\(r\)</span> y para cualquier conjuntos de subíndices <span class="math inline">\(i_1, i_2,...i_T\)</span>:</p>
+<p><span class="math display">\[
+F_{y_{i_1},{y_{i_2}},..,{y_{i_T}}}(y_1,...,y_T)=F_{y_{i_1+r},{y_{i_2+r}},..,{y_{i_T+r}}}(y_1,...,y_T)
+\]</span></p>
+<p>Es decir, que la distribución conjunta de <span class="math inline">\({y_i}\)</span> con <span class="math inline">\(i=1,2,...,T\)</span>, depende solo de la distancia <span class="math inline">\(r\)</span> y no de <span class="math inline">\(i\)</span>. Por ejemplo, la probabilidad conjunta de <span class="math inline">\((y_1,y_{11})=(y_{51},y_{61})\)</span>, en este caso <span class="math inline">\(r=10\)</span>. Lo importante para distribución es la posición relativa de la secuencia. Además, esto quiere decir que la probabilidad que <span class="math inline">\(y\)</span> caiga en algún intervalo en particular es siempre la misma. Si un proceso estocástico es estrictamente estacionario: la media, la varianza y demás momentos de las distribución serán los mismos para todo <span class="math inline">\(i\)</span>. Un ejemplo de series estrictamente estacionarias son los procesos independientes e identicamente distribuidos (<span class="math inline">\(i.i.d.\)</span>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(moments)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>Promedios<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="fu">mean</span>(Maine.moth.ts[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>]),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>             <span class="fu">mean</span>(Maine.moth.ts[<span class="dv">13</span><span class="sc">:</span><span class="dv">24</span>]),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>             <span class="fu">mean</span>(Maine.moth.ts[<span class="dv">25</span><span class="sc">:</span><span class="dv">36</span>]))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(Promedios) <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"1996"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"1997"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"1998"</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>Des.st<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="fu">sd</span>(Maine.moth.ts[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>]),</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>             <span class="fu">sd</span>(Maine.moth.ts[<span class="dv">13</span><span class="sc">:</span><span class="dv">24</span>]),</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>             <span class="fu">sd</span>(Maine.moth.ts[<span class="dv">25</span><span class="sc">:</span><span class="dv">36</span>]))</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>Asimetría <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="fu">skewness</span>(Maine.moth.ts[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>]),</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>              <span class="fu">skewness</span>(Maine.moth.ts[<span class="dv">13</span><span class="sc">:</span><span class="dv">24</span>]),</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>             <span class="fu">skewness</span>(Maine.moth.ts[<span class="dv">25</span><span class="sc">:</span><span class="dv">36</span>]))</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>Curtosis<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="fu">kurtosis</span>(Maine.moth.ts[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>]),</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>              <span class="fu">kurtosis</span>(Maine.moth.ts[<span class="dv">13</span><span class="sc">:</span><span class="dv">24</span>]),</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>             <span class="fu">kurtosis</span>(Maine.moth.ts[<span class="dv">25</span><span class="sc">:</span><span class="dv">36</span>]))</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>momentos<span class="ot">&lt;-</span><span class="fu">cbind</span>(Promedios, Des.st, Asimetría, Curtosis)</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>momentos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Promedios    Des.st Asimetría Curtosis
+1996  5.258333 0.9472048 0.4142406 1.836901
+1997  5.125000 0.9126634 0.4211229 1.691060
+1998  4.508333 0.8500891 0.9459722 2.456275</code></pre>
+</div>
+</div>
+<p>Usando la base de datos Maine.moth.ts() se determina que no es estrictamente estacionaria, porque sus cuatro momentos no son los mismos en distintos intervalos de tiempo.</p>
+<p>Los procesos son no estacionarios simplemente porque tienen tendencia deterministica. Es decir, que si se remueve la tendencia, la serie de tiempo se convertirá en una serie estacionaria. A estas series se les conoce como <strong>series estacionarias con tendencia</strong>. Asimismo, si se tiene un serie de tiempo que no es estacionaria pero que su diferencia sí lo es, se conoce como <strong>serie estacionaria en diferencias</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">aggregate</span>(AirPassengers))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/tendencia de la serie-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">aggregate</span>(Maine.moth.ts))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/tendencia de la serie-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="estacionariedad-débil" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="estacionariedad-débil"><span class="header-section-number">2.1.2</span> Estacionariedad débil</h3>
+<p>Un proceso estocástico {<span class="math inline">\(y_i\)</span>} con <span class="math inline">\(i=1,2,...,T\)</span> es <strong>debilmente estacionario</strong> si se cumple los siguiente:</p>
+<p><span class="math display">\[
+E(y_i)=\mu \hspace{0.5cm} \tag 2
+\]</span></p>
+<p><span class="math display">\[
+E(y_i-\mu)^2=\sigma^2&lt;\infty \tag 3
+\]</span></p>
+<p><span class="math display">\[
+cov(y_i,y_{i-j})=\gamma_{i-(i-j)}=\gamma_j \tag 4
+\]</span></p>
+</section>
+<section id="ejemplo-de-gráfica-de-yahoo-finance" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="ejemplo-de-gráfica-de-yahoo-finance"><span class="header-section-number">2.1.3</span> Ejemplo de gráfica de yahoo finance</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyquant)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dynlm)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>fecha.inicio<span class="ot">=</span><span class="fu">as.Date</span>(<span class="st">"2015-01-01"</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>fecha.final<span class="ot">=</span><span class="fu">as.Date</span>(<span class="st">"2024-10-25"</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">getSymbols</span>(<span class="st">"VZ"</span>, <span class="at">from=</span>fecha.inicio, <span class="at">to=</span>fecha.final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "VZ"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(VZ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(VZ<span class="sc">$</span>VZ.Open, <span class="at">main=</span><span class="st">"Serie no estacionaria"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSymbols</span>(<span class="st">"BTC"</span>, <span class="at">from=</span>fecha.inicio, <span class="at">to=</span>fecha.final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "BTC"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(BTC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Bitcoin-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>Rendi_BTC <span class="ot">&lt;-</span><span class="fu">dailyReturn</span>(BTC) <span class="co"># retornos diarios de la serie</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de la serie</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(Rendi_BTC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>R.s.BTC <span class="ot">&lt;-</span><span class="fu">weeklyReturn</span>(BTC)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de los redimientos semanales de VZ</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(R.s.BTC, <span class="at">main=</span><span class="st">"Serie estacionaria"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># La media de los rendimientos</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(Rendi_BTC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.001086456</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficando de manera conjunta</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(BTC<span class="sc">$</span>BTC.Close)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(Rendi_BTC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-4-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Como su nombre lo indica existe un gráfico no estacionario (<em>primero</em>) y el estacionario (<em>segundo</em>).Una forma de mirar que la primera serie es no estacionaria es tomando un intervalo de un tamaño fijo en dos puntos distantes y calcular el promedio.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">mean</span>(BTC<span class="sc">$</span>BTC.Open[<span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>]), <span class="fu">mean</span>(BTC<span class="sc">$</span>BTC.Open[<span class="dv">30</span><span class="sc">:</span><span class="dv">50</span>]), <span class="fu">mean</span>(BTC<span class="sc">$</span>BTC.Open))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1]     [,2] [,3]
+[1,] 26.41 27.33571 27.2</code></pre>
+</div>
+</div>
+<p>Lo que se puede observar que en los los tres intervalos, existen tres valores distintos de la media. Lo que me genera indicios de no estacionariedad de la serie</p>
+</section>
+</section>
+<section id="la-autocovarianza-la-autocorrelación-y-el-correlograma" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> La autocovarianza, la autocorrelación y el correlograma</h1>
+<p>Se supone que el subíndice <span class="math inline">\(i\)</span> representa al tiempo, por lo tanto, el proceso estocástico <span class="math inline">\({y_i}, i=1,2,...T\)</span> será un serie de tiempo. La <strong>autocovarianza</strong> se exprese como <span class="math inline">\(\gamma_j\)</span> y se define así:</p>
+<p><span class="math display">\[cov(y_i, y_{i-j})=\gamma_{i-(i-j)}=\gamma_j [4]\]</span></p>
+<p>Como se puede advertir en la ecuación [4], la autocovarianza solo depende de <span class="math inline">\(j\)</span> (posición relativa). La varianza de la serie de tiempo <span class="math inline">\({y_i}\)</span> será igual:</p>
+<p><span class="math display">\[cov(y_i, y_i)=var(y_i)=\gamma_{i-i}=\gamma_0 [5]\]</span> Por lo tanto, la <strong>autocorrelación</strong> de orden <span class="math inline">\(j(\rho_j)\)</span> se define como el ratio entre la autocovarianza de orden <span class="math inline">\(j\)</span> y la varianza:</p>
+<p><span class="math display">\[\rho_j=\frac{\gamma_j}{\gamma_0}=\frac{cov(y_i, y_{i-j})}{var(y_i)}[6]\]</span></p>
+<p>Con <span class="math inline">\(j=1,2,...T\)</span> Si <span class="math inline">\(j=0; \rho_j=1\)</span>. Si graficamos la evolución en el tiempo de <span class="math inline">\(\rho_j\)</span>, construiremos el <strong>correlograma</strong></p>
+<section id="el-proceso-de-ruido-blanco" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="el-proceso-de-ruido-blanco"><span class="header-section-number">3.1</span> El proceso de ruido blanco</h2>
+<p>El proceso de ruido blanco (<strong>White noise process</strong>), es un proceso débilmente estacionario con media constante y no autocorrelación. Es decir, el proceso de ruido blanco debe cumplir:</p>
+<p><span class="math display">\[E(y_i)=\mu [7]\]</span> <span class="math display">\[cov(y_i,y_{i-j})=\gamma_j=0 \forall j\neq0[8]\]</span> <span class="math display">\[cov(y_i,y_i)=\gamma_0=\sigma^2 [9]\]</span></p>
+</section>
+<section id="pruebas-de-autocorrelación" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="pruebas-de-autocorrelación"><span class="header-section-number">3.2</span> Pruebas de autocorrelación</h2>
+<p>C0menzamos recordando la definición matemática de la autocorrelación muestral</p>
+<p><span class="math display">\[\hat{\gamma}_j=\frac{1}{n-j}\times \sum_{t=j+1}^n(y_t-\bar{y})\times(y_{t-j}-\bar{y}) [10]\]</span> Se divide al inicio de la ecuación por <span class="math inline">\(n-j\)</span> y no por <span class="math inline">\(n\)</span>, para obtener un estadístico insesgado. Esto es importante cuando el tamaño de la muestra es pequeño; pues si la muestra es grande (<span class="math inline">\(n\rightarrow \infty\)</span>), <span class="math inline">\(n-j\)</span> se aproxima a <span class="math inline">\(n\)</span>. Ahora, la media de la serie se calcula de la siguiente forma:</p>
+<p><span class="math display">\[\bar{y}=n^{-1}\times\sum_{t=1}^ny_t[11]\]</span> Siguiendo a nivel muestral, definimos la autocorrelación muestral como:</p>
+<p><span class="math display">\[\hat{\rho}_j=\frac{\hat{\gamma}_j}{\hat{\gamma}_0} [12]\]</span> Una vez, definidas las anteriores ecuaciones se presenta los <em>test’s</em> empleados para determinar la presencia de autocorrelación. El primer método se basa en la siguiente propiedad asintótica:</p>
+<p><span class="math display">\[\sqrt{n}\times\hat{\rho}\xrightarrow[d]{}N(0,I_m) [13]\]</span></p>
+<p>Donde: <span class="math inline">\(\hat{\rho}=(\hat{\rho}_1,\hat{\rho}_2, \hat{\rho}_3,....,\hat{\rho}_m)\)</span>. Esta ecuación establece que las autocorrelaciones de <span class="math inline">\(\rho\)</span> asintóticamente se distribuyen como una normal estándar. Por lo tanto, se pueden construir intervalos de confianza para la autocorrelación poblacional, así:.</p>
+<p><span class="math display">\[\rho \in [\pm z_{\alpha/2}\times \frac{1}{\sqrt{n}}] [14]\]</span></p>
+<section id="ejemplo" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="ejemplo"><span class="header-section-number">3.2.1</span> Ejemplo</h3>
+<p>si el nivel de confianza deseado es 90% (<span class="math inline">\(\alpha=0.10\)</span>), el valor de <span class="math inline">\(z_{\alpha/2}=1.645\)</span>. Entonces tenemos el intervalo de confianza para las autocorrelaciones poblacionales</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Con alpha/2, alpha=0.10, alpha/2=0.95</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="at">p=</span><span class="fl">0.95</span>, <span class="at">lower.tail =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.644854</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha=0.20, alpha/2=0.90</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="at">p=</span><span class="fl">0.90</span>, <span class="at">lower.tail =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.281552</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha=0.40, alpha/2=0.80</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="at">p=</span><span class="fl">0.80</span>, <span class="at">lower.tail =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8416212</code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+\rho \in [\pm 1.645\times \frac{1}{\sqrt{n}}] [15]
+\]</span> Supongamos que <span class="math inline">\(\alpha=0.01\)</span> y que tenemos <span class="math inline">\(n=50\)</span>, entonces el intervalos es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">qnorm</span>(<span class="at">p=</span>(<span class="dv">1</span><span class="sc">-</span>(<span class="fl">0.20</span><span class="sc">/</span><span class="dv">2</span>)), <span class="at">lower.tail =</span> F)<span class="sc">*</span><span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">50</span>),<span class="fu">qnorm</span>(<span class="at">p=</span><span class="dv">1</span><span class="sc">-</span>(<span class="fl">0.20</span><span class="sc">/</span><span class="dv">2</span>), <span class="at">lower.tail =</span> T)<span class="sc">*</span><span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           [,1]      [,2]
+[1,] -0.1812388 0.1812388</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>LI <span class="ot">&lt;-</span><span class="fu">qnorm</span>(<span class="at">p=</span>(<span class="dv">1</span><span class="sc">-</span>(<span class="fl">0.01</span><span class="sc">/</span><span class="dv">2</span>)), <span class="at">lower.tail =</span> F)<span class="sc">*</span><span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">50</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>LS <span class="ot">&lt;-</span><span class="fu">qnorm</span>(<span class="at">p=</span>(<span class="dv">1</span><span class="sc">-</span>(<span class="fl">0.01</span><span class="sc">/</span><span class="dv">2</span>)), <span class="at">lower.tail =</span> T)<span class="sc">*</span><span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">50</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">cbind</span>(LI, LS))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             LI        LS
+[1,] -0.3642773 0.3642773</code></pre>
+</div>
+</div>
+<p>Imagine que tiene el siguiente conjunto de <span class="math inline">\(\widehat{\rho}=(0.01, -0.3, -0.12)\)</span></p>
+</section>
+</section>
+<section id="pruebas-de-autocorrelación-los-métodos-de-box-pierce-y-ljung-box" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="pruebas-de-autocorrelación-los-métodos-de-box-pierce-y-ljung-box"><span class="header-section-number">3.3</span> Pruebas de autocorrelación: los métodos de Box-Pierce y Ljung-Box</h2>
+<p>Existen dos métodos que permiten determinar la existencia de autocorrelaciones hasta un orden determinado (<span class="math inline">\(m\)</span>), estas pruebas se les conoce como el método de <span class="math inline">\(Box-Pierce\)</span> y método de <span class="math inline">\(Ljung-Box\)</span>, estas permiten testear la siguiente hipótesis nula:</p>
+<p><span class="math display">\[H_0:\rho_1=\rho_2=\rho_3=...=\rho_m=0[16]\]</span> * El test de <span class="math inline">\(Box-Pierce\)</span> se calcula mediante:</p>
+<p><span class="math display">\[Box-pierce(Q)=n\times \sum_{j=1}^m \hat{\rho}_j=\sum_{j=1}^m(\sqrt{n}\times\hat{\rho}_j)\sim \chi_m^2 [17]\]</span></p>
+<ul>
+<li>El test de <span class="math inline">\(Ljung-Box\)</span>:</li>
+</ul>
+<p><span class="math display">\[Ljung-Box(Q)=n\times(n+2)\times\sum_{j=1}^m \frac{\hat{\rho}^2_j}{n-j}=\sum_{j=1}^m \frac{n+2}{n-j}\times(\sqrt{n}\times\hat{\rho}_j^2)\sim \chi^2_{(m)}[18]\]</span></p>
+<p>Las dos pruebas se distribuyen como una <strong>chi-cuadrado</strong> (<span class="math inline">\(\chi^2\)</span>), ya que <span class="math inline">\(\sqrt{n}\times\hat{\rho}\)</span> es asintóticamente independiente y distribuido como una normal estándar. Por lo tanto, la suma al cuadrado de estos números es asitóticamente chi-cuadrado. Los grados de libertad de esta distribución son iguales a <span class="math inline">\(m\)</span>, que representa el número de rezagos deseados.</p>
+<p>El método de <strong>Ljung-Box</strong> es preferido cuando el tamaño de la muestra es pequeño. Como se puede observar a medida que el número de observaciones se incrementa <span class="math inline">\(n\)</span>, la diferencia entre los métodos desaparece.</p>
+<p>El problema con ambas pruebas es que no existe una metodología clara para seleccionar el número de rezagos (<span class="math inline">\(m\)</span>). Si se escoge un <span class="math inline">\(m\)</span> muy pequeño, se corre el riesgo que no estén capturando autocorrelaciones de orden superior. Por otro lado, si el número <span class="math inline">\(m\)</span> es demasiado grande las propiedades asintóticas del test se pueden perder y las distribución ya no será una <span class="math inline">\(X^2\)</span></p>
+<section id="ejemplo-1" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="ejemplo-1"><span class="header-section-number">3.3.1</span> Ejemplo</h3>
+<p>En esta parte se presenta un ejemplo ficticio que permite entender cómo es que estos test son utilizados en la práctica. Se parte del hecho que se han calculado las tres primeras autocorrelaciones de los retornos de algún instrumento financiero. Se supone que el número de observaciones es igual a 50 y que el nivel de confianza deseado es igual al 90%. Finalmente, se asume que las autocorrelaciones obtenidas son las siguientes:<span class="math inline">\(\hat{\rho}_1=1.25;\hat{\rho}_2=0.22; \hat{\rho}_3=0.02\)</span></p>
+<p>Primero, se estima el intervalo de confianza para las tres autocorrelaciones:</p>
+<p><span class="math display">\[\rho \in [\pm 1.645\times \frac{1}{\sqrt{50}}]\rightarrow \rho \in[-0.2326;0.2326]\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>LI <span class="ot">&lt;-</span><span class="fu">qnorm</span>(<span class="at">p=</span>(<span class="dv">1</span><span class="sc">-</span>(<span class="fl">0.10</span><span class="sc">/</span><span class="dv">2</span>)), <span class="at">lower.tail =</span> F)<span class="sc">*</span><span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">50</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>LS <span class="ot">&lt;-</span><span class="fu">qnorm</span>(<span class="at">p=</span>(<span class="dv">1</span><span class="sc">-</span>(<span class="fl">0.10</span><span class="sc">/</span><span class="dv">2</span>)), <span class="at">lower.tail =</span> T)<span class="sc">*</span><span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">50</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">cbind</span>(LI, LS))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             LI        LS
+[1,] -0.2326174 0.2326174</code></pre>
+</div>
+</div>
+<p>Con base en este intervalo de confianza, solo la primera autocorrelación no está en el intervalo. Por lo que este será un indicio de la presencia de autocorrelación de primer orden.</p>
+<p>Ahora calculemos los test de <strong>Box-Pierce</strong> y <strong>Ljung-Box</strong></p>
+<p><span class="math display">\[Box-Pierce(Q)=\Sigma_{j=1}^m(\sqrt{n}\times\hat{\rho}_j)^2=(\sqrt{50}\times1.25)^2+(\sqrt{50}\times0.22)^2+(\sqrt{50}\times0.02)^2\\=78.125+2.42+0.02=80.565\]</span> <span class="math display">\[Ljung-Box(Q)=\Sigma_{j=1}^m\frac{n+2}{n-j}\times(\sqrt{n}\times\hat{\rho}_j)^2\]</span></p>
+<p><span class="math display">\[
+=(\frac{50+2}{50-1})\times(\sqrt{50}\times1.25)^2+(\frac{50+2}{50-2})\times(\sqrt{50}\times0.22)^2+(\frac{50+2}{50-3})\times(\sqrt{50}\times0.02)^2
+\]</span> <span class="math display">\[
+82.91+2.61+0.0221=
+85.55
+\]</span> La hipótesis nula que se va a probar es:</p>
+<p><span class="math display">\[
+H_0:\rho_1=\rho_2=\rho_3=0
+\]</span></p>
+<p>Valores de siginificancia (recuerde que los grados de libertad <span class="math inline">\(m=3\)</span>):</p>
+<ul>
+<li><span class="math inline">\(\alpha=0.10\)</span> una prueba no direccional o de dos colas <span class="math inline">\(7.81\)</span></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qchisq</span>(<span class="at">p =</span> <span class="fl">0.10</span><span class="sc">/</span><span class="dv">2</span>, </span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">df =</span> <span class="dv">3</span>, </span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.814728</code></pre>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(\alpha=0.05\)</span> una prueba no direccional o de dos colas <span class="math inline">\(9.3484\)</span></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qchisq</span>(<span class="at">p =</span> <span class="fl">0.05</span><span class="sc">/</span><span class="dv">2</span>, </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">df =</span> <span class="dv">3</span>, </span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9.348404</code></pre>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(\alpha=0.01\)</span> una prueba no direccional o de dos colas <span class="math inline">\(12.8381\)</span></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qchisq</span>(<span class="at">p =</span> <span class="fl">0.01</span><span class="sc">/</span><span class="dv">2</span>, </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">df =</span> <span class="dv">3</span>, </span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12.83816</code></pre>
+</div>
+</div>
+<p><strong>Regla de decisión:</strong> Si el valor del test (Box-Pierce o Ljung-Box) <span class="math inline">\(&gt;\)</span> valores críticos (<span class="math inline">\(\frac{\alpha}{2}=0.05;0.025;0.005\rightarrow H_0\)</span>) se rechaza</p>
+<p>Por lo tanto, como los valores de las prubeas son <span class="math inline">\(80.57;85.55\)</span>, para <strong>Box-Pierce</strong> y <strong>Ljung-Box</strong>, respectivamente; se rechaza la <span class="math inline">\(H_0\)</span>. Lo que significa la existencia de autocorrelación significativa de hasta el tercer rezago u orden.</p>
+</section>
+</section>
+<section id="ejemplos-con-r-y-bases-de-datos-sobre-las-pruebas-de-autocorrelación" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="ejemplos-con-r-y-bases-de-datos-sobre-las-pruebas-de-autocorrelación"><span class="header-section-number">3.4</span> Ejemplos con R y bases de datos sobre las pruebas de autocorrelación</h2>
+<p>Para esta prueba suponemos la siguiente hipótesis</p>
+<p><span class="math display">\[H_0:  \rho_1=0\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Probando la autocorrelación para la serie VZ&amp;VZ.Open</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(VZ<span class="sc">$</span>VZ.Open, </span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"B"</span>, </span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">lag =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Box-Pierce test
+
+data:  VZ$VZ.Open
+X-squared = 12111, df = 5, p-value &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(VZ<span class="sc">$</span>VZ.Open, </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"L"</span>, </span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">lag =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Box-Ljung test
+
+data:  VZ$VZ.Open
+X-squared = 12135, df = 5, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p><strong>Regla de decisión</strong>: Si el <span class="math inline">\(p-valor=2.2\times10^{-16}&lt;\alpha=0.01;0.05;0.10\)</span> la hipótesis nula se rechaza.</p>
+<p>En nuestro ejemplo ambas pruebas muestran que se rechaza la hipótesis nula, por lo que existe autocorrelación significativa de quinto orden</p>
+<p>Usando los rendimientos</p>
+<p><span class="math display">\[H_0:\rho_1=\rho_2=\rho_3=\rho_4=\rho_5=0\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Probando la autocorrelación para la serie Rendimientos diarios</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>Rendimiento.VZ <span class="ot">&lt;-</span> <span class="fu">dailyReturn</span>(VZ)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="fu">chartSeries</span>(Rendimiento.VZ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Pruebas de autocorrelación-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(Rendimiento.VZ,</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">lag =</span> <span class="dv">1</span>, </span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"B"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Box-Pierce test
+
+data:  Rendimiento.VZ
+X-squared = 5.7133, df = 1, p-value = 0.01684</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(Rendimiento.VZ, </span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">lag =</span> <span class="dv">1</span>, </span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"L"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Box-Ljung test
+
+data:  Rendimiento.VZ
+X-squared = 5.7202, df = 1, p-value = 0.01677</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Rendimiento.VZ, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Pruebas de autocorrelación-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Rendimientos semanales</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>Rendimien.VZ.sem <span class="ot">&lt;-</span> <span class="fu">weeklyReturn</span>(VZ)</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Rendimien.VZ.sem, </span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>, </span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Pruebas de autocorrelación-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(Rendimien.VZ.sem, </span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">lag =</span> <span class="dv">5</span>, </span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"B"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Box-Pierce test
+
+data:  Rendimien.VZ.sem
+X-squared = 6.706, df = 5, p-value = 0.2434</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(Rendimien.VZ.sem, </span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">lag =</span> <span class="dv">5</span>, </span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"L"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Box-Ljung test
+
+data:  Rendimien.VZ.sem
+X-squared = 6.7741, df = 5, p-value = 0.238</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(Rendimien.VZ.sem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0001350026</code></pre>
+</div>
+</div>
+<p>Dado que el <strong>pvalor</strong> en ambos <em>test</em> es mayor que los valores <span class="math inline">\(\alpha=(0.1, 0.05, 0.001)\)</span> la <span class="math inline">\(H_0\)</span> no se rechaza. Entonces, los redimientos semanales no presentan autocorrelación de quinto orden.</p>
+</section>
+<section id="modelos-de-medias-móviles" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="modelos-de-medias-móviles"><span class="header-section-number">3.5</span> Modelos de medias móviles</h2>
+<p>El proceso de medias móviles o por sus siglas en ingles <em>moving averages</em> (MA) es un modelo que supone que la variable puede ser explicada por un cierto número de rezagos (<span class="math inline">\(q\)</span>) de los errores, de la siguiente manera:</p>
+<p><span class="math display">\[
+y_t=\alpha+e_t+\theta_1\times e_{t-1}+\theta_2\times e_{t-2}+...+\theta_q\times e_{t-q} \tag 1
+\]</span> Donde: los errores (<span class="math inline">\(u\)</span>) son <strong>i.i.d.</strong> con media cero y varianza <span class="math inline">\(\sigma^2\)</span>, en otras palabras <span class="math inline">\(u\sim N(0,\sigma^2)\)</span>.</p>
+<p>Usando el símbolo de sumatoria para reducir la ecuación (1), tenemos:</p>
+<p><span class="math display">\[
+y_t=\alpha+e_t+\Sigma_{j=1}^q\theta_j\times e_{t-j} \tag 2
+\]</span></p>
+<p>Es necesario definir el siguiente operador matemático <span class="math inline">\(\mathbf{L}\)</span>:</p>
+<p><span class="math display">\[
+L^my_t=y_{t-m} \tag3
+\]</span></p>
+<p>Por ejemplo, <span class="math inline">\(Ly_t=y_{t-1},L^2y_t=y_{t-2}\)</span>. Usando la notación de (3) en (2), tenemos:</p>
+<p><span class="math display">\[
+y_t=\alpha+e_t+\Sigma_{j=1}^q\theta_j\times L^je_t [4]
+\]</span></p>
+<p>Para completar la ecuación a la que se quiere llegar, definimos lo siguiente:</p>
+<p><span class="math display">\[
+\Theta(L)=1+\theta_1\times L+\theta_2\times L^2+\theta_3\times L^3+...+\theta_q\times L^q \tag 5
+\]</span></p>
+<p>Si uso la (5) en (4) tenemos:</p>
+<p><span class="math display">\[
+y_t=\alpha+\Theta(L)e_t \tag 6
+\]</span></p>
+<p>En la ecuación (6) se requiere que todas las raíces características caigan fuera del círculo unitario, es decir que cada raíz de <span class="math inline">\(r\)</span> en la siguiente ecuación característica sea mayor que uno en valor absoluto.</p>
+<p><span class="math display">\[
+1+\theta_1\times r+\theta_2\times r^2+...+\theta_q\times r^q=0 \tag 7
+\]</span></p>
+<p>Esta condición, se conoce como la <strong>la condición de invertibilidad</strong>. Esta condición asegura que el modelo <span class="math inline">\(MA(q)\)</span>, representado como un modelo AR(<span class="math inline">\(\infty\)</span>) converja cero, es decir, que (<span class="math inline">\((\Theta(L))^{-1}\rightarrow0\)</span>). Esta condición asegura que el modelo <span class="math inline">\(MA(q)\)</span> no sea explosivo. Esta condición se parece a la condición de <strong>estacionariedad</strong> del modelo AR(p); a su vez, la condición de invertibilidad es muy importante cuando trabajamos con modelo ARMA(p,q).</p>
+<p>Para trabajar con series temporales es importante determinar la función de autocorrelación, recordemos:</p>
+<p><span class="math display">\[
+\rho_j=\frac{\gamma_j}{\gamma_0}=\frac{cov(y_t,y_{t-j})}{var(y_t)}
+\]</span></p>
+<p>Para ello, necesitamos la media, la varianza y las autocovarianzas.</p>
+</section>
+<section id="determinación-de-la-función-de-autocorrelación" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="determinación-de-la-función-de-autocorrelación"><span class="header-section-number">3.6</span> Determinación de la función de autocorrelación</h2>
+<p>Para esto, partimos de un modelo MA(3)</p>
+<p><span class="math display">\[
+y_t=\alpha+e_t+\theta_1\times e_{t-1}+\theta_2\times e_{t-2}+\theta_3\times e_{t-3} \tag 8
+\]</span></p>
+<p>A continuación se determina la media</p>
+<section id="determinación-de-la-media" class="level3" data-number="3.6.1">
+<h3 data-number="3.6.1" class="anchored" data-anchor-id="determinación-de-la-media"><span class="header-section-number">3.6.1</span> Determinación de la media</h3>
+<p>No olvidar que se asume que <span class="math inline">\(e\)</span> es ruido blanco (<span class="math inline">\(\mu=0\)</span> y varianza =<span class="math inline">\(\sigma^2\)</span>). calculamos el valor esperado de (8), para ello tomamos la esperanza matemática en ambas partes, tenemos</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(y_t)=E(\alpha+u_t+\theta_1\times e_{t-1}+\theta_2\times e_{t-2}+\theta_3\times e_{t-3}) \tag 9
+\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
+E(y_t)=E(\mu)+E(u_t)+\theta_1\times E(u_{t-1})+\theta_2\times E(u_{t-2})+\theta_3\times E(u_{t-3}) [10]
+\]</span></p>
+<p>Como asumimos que los errores son ruido blanco, todos los valores esperados de los errores son cero. La [10] se reescribe de la siguiente forma:</p>
+<p><span class="math display">\[E(y_t)= \mu [11]\]</span></p>
+<p>A continuación se determina la varianza</p>
+</section>
+<section id="determinación-de-la-varianza" class="level3" data-number="3.6.2">
+<h3 data-number="3.6.2" class="anchored" data-anchor-id="determinación-de-la-varianza"><span class="header-section-number">3.6.2</span> Determinación de la varianza</h3>
+<p>La varianza se define como:</p>
+<p><span class="math display">\[var(y_t)=\gamma_0=E([y_t-E(y_t)]^2)=E[(y_t-\mu)^2] [12]\]</span></p>
+<p>Se asume que <span class="math inline">\(\mu=0\)</span>, se desarrolla el valor esperado:</p>
+<p><span class="math display">\[var(y_t)=\gamma_0=E[(\mu+u_t+\theta_1\times u_{t-1}+\theta_2\times u_{t-2}+\theta_3\times u_{t-3}-\mu)^2]\]</span> <span class="math display">\[=E[(u_t+\theta_1\times u_{t-1}+\theta_2\times u_{t-2}+\theta_3\times u_{t-3})^2]\]</span> <span class="math display">\[\gamma_0=E[u_t^2+\theta_1^2\times u_{t-1}^2+\theta_2^2\times u_{t-2}^2+\theta_3^2\times u_{t-3}^2+(2\times\theta_1\times u_t\times u_{t-1}+otros-términos-cruzados)] [13]\]</span> Analizando el primer término cruzado que presenta la ecuación [13]. Para esto recordamos como se define la covarianza:</p>
+<p><span class="math display">\[cov(u_t,u_{t-j})=E(u_t\times u_{t-j})-E(u_t)\times E(u_{t-j})=E(u_t\times u_{t-j}) [14]\]</span> Recordar que los errores son ruido blanco, las autocovarianzas de los errores son cero. Entonces si se aplica el operador de la esperanza a cada uno de los terminos cruzados de la [13], serán iguales a cero. Por lo tanto, vemos que sucede con los primeros términos:</p>
+<p><span class="math display">\[var(y_t)=\gamma_0=E[u_t^2+\theta_1^2\times u_{t-1}^2+\theta_2^2\times u_{t-2}^2+\theta_3^2\times u_{t-3}^2]\]</span> <span class="math display">\[var(y_t)=\gamma_0=E(u_t^2)+\theta_1^2\times E(u_{t-1}^2)+\theta_2^2\times E(u_{t-2}^2)+\theta_3^2\times E(u_{t-3}^2)\]</span> <span class="math display">\[var(y_t)=\gamma_0=\sigma^2+\theta_1^2\times\sigma^2+\theta_2^2\times\sigma^2+\theta_3^2\times\sigma^2\]</span> <span class="math display">\[var(y_t)=\gamma_0=\sigma^2\times(1+\theta_1^2+\theta_2^2+\theta_3^2)[15]\]</span> Ahora, tenemos que obtener las autocorvarianzas. Partimos recordando que:</p>
+<p><span class="math display">\[cov(y_t,y_{t-j})=E(y_t\times y_{t-j})-E(y_t)\times E(y_{t-j})=E(y_t\times y_{t-j}) [16]\]</span> Seguimos suponiendo que <span class="math inline">\(\mu=0\)</span>, es decir, que <span class="math inline">\(E(y_t)=E(y_{t-1})=0\)</span>. Calculamos la autocovarianza de primer orden:</p>
+<p><span class="math display">\[cov(y_t,y_{t-1})=E(y_t\times y_{t-1})=E[(u_t+\theta_1u_{t-1}+\theta_2u_{t-2}+\theta_3u_{t-3})(u_{t-1}+\theta_1u_{t-2}+\theta_2u_{t-3}+\theta_3u_{t-4})] [17]\]</span> Operando tenemos:</p>
+<p><span class="math display">\[cov(y_t,y_{t-1})=E(y_t\times y_{t-1})=E[\theta_1u_{t-1}^2+\theta_1\theta_2u_{t-2}^2+\theta_2\theta_3u_{t-3}^2+términos-cruzados] [18]\]</span> De nuevo, cuando se aplica el operador de la esperanza a los términos cruzados se hacen cero. Entonces, el análisis es sobre los tres primeros términos:</p>
+<p><span class="math display">\[cov(y_t,y_{t-1})=\gamma_1=\theta_1E(u_{t-1}^2)+\theta_1\theta_2E(u_{t-2}^2)+\theta_2\theta_3E(u_{t-3}^2)\]</span> <span class="math display">\[cov(y_t,y_{t-1})=\gamma_1=\theta_1\sigma^2+\theta_1\theta_2\sigma^2+\theta_2\theta_3\sigma^2\]</span> <span class="math display">\[cov(y_t,y_{t-1})=\gamma_1=\sigma^2(\theta_1+\theta_1\theta_2+\theta_2\theta_3) [19]\]</span> Para la autocorvarianza de segundo:</p>
+<p><span class="math display">\[cov(y_t,y_{t-2})=E(y_t\times y_{t-2})=E[(u_t+\theta_1u_{t-1}+\theta_2u_{t-2}+\theta_3u_{t-3})(u_{t-2}+\theta_1u_{t-3}+\theta_2u_{t-4}+\theta_3u_{t-5})] [20]\]</span> Operando tenemos: <span class="math display">\[cov(y_t,y_{t-2})=E(y_t\times y_{t-2})=\gamma_2=E[\theta_2u_{t-2}^2+\theta_1\theta_3u_{t-3}^2+términos-cruzadas] [21]\]</span> Aplicando el valor esperado tenemos:</p>
+<p><span class="math display">\[cov(y_t,y_{t-2})=\gamma_2=\theta_2E(u_{t-2}^2)+\theta_1\theta_3E(u_{t-3}^2)\]</span> <span class="math display">\[cov(y_t,y_{t-2})=\gamma_2=\theta_2\sigma^2+\theta_1\theta_3\sigma^2\]</span> <span class="math display">\[cov(y_t,y_{t-2})=\gamma_2=\sigma^2(\theta_2+\theta_1\theta_3) [22]\]</span> La autocovarianza de tercer orden:</p>
+<p><span class="math display">\[cov(y_t,y_{t-3})=E(y_t\times y_{t-3})=E[(u_t+\theta_1u_{t-1}+\theta_2u_{t-2}+\theta_3u_{t-3})(u_{t-3}+\theta_1u_{t-4}+\theta_2u_{t-5}+\theta_3u_{t-6})][23]\]</span> <span class="math display">\[cov(y_t,y_{t-3})=E(y_t\times y_{t-3})=E[\theta_3u_{t-3}^2+términos-cruzados] [24]\]</span> Aplicando las reglas del valor esperado tenemos:</p>
+<p><span class="math display">\[cov(y_t,y_{t-3})=\gamma_3=\theta_3E(u_{t-3}^2)\]</span> <span class="math display">\[cov(y_t,y_{t-3})=\gamma_3=\theta_3\sigma^2[25]\]</span> Como podemos observar, las autocovarianzas de orden mayor a 3 solo tendrán elementos cruzados, por lo tanto, estas autocovarianzas serán iguales a cero</p>
+<p><span class="math display">\[cov(y_t,y_{t-j})=E(y_t\times y_{t-j})=0\forall j&gt;3 [26]\]</span> Para finalizar calculamos las autocorrelaciones</p>
+</section>
+<section id="calculo-de-autocorrelaciones" class="level3" data-number="3.6.3">
+<h3 data-number="3.6.3" class="anchored" data-anchor-id="calculo-de-autocorrelaciones"><span class="header-section-number">3.6.3</span> Calculo de autocorrelaciones</h3>
+<ul>
+<li>Autocorrelación de primer orden:</li>
+</ul>
+<p><span class="math display">\[\rho_1=\frac{\gamma_1}{\gamma_0}=\frac{\sigma^2(\theta_1+\theta_1\theta_2+\theta_2\theta_3)}{\sigma^2(1+\theta_1^2+\theta_2^2+\theta_3^2)}=\frac{\theta_1+\theta_1\theta_2+\theta_2\theta_3}{1+\theta_1^2+\theta_2^2+\theta_3^2} [27]
+\]</span></p>
+<ul>
+<li>Autocorrelación de segundo orden:</li>
+</ul>
+<p><span class="math display">\[\rho_2=\frac{\gamma_2}{\gamma_0}=\frac{\sigma^2(\theta_2+\theta_1\theta_3)}{\sigma^2(1+\theta_1^2+\theta_2^2+\theta_3^2)}=\frac{\theta_2+\theta_1\theta_3}{1+\theta_1^2+\theta_2^2+\theta_3^2} [28]\]</span> * Autocorrelación de tercer orden:</p>
+<p><span class="math display">\[\rho_3=\frac{\gamma_3}{\gamma_0}=\frac{\theta_3\sigma^2}{\sigma^2(1+\theta_1^2+\theta_2^2+\theta_3^2)}=\frac{\theta_3}{1+\theta_1^2+\theta_2^2+\theta_3^2} [29]\]</span> Para</p>
+<p><span class="math display">\[\rho_j=0\forall j&gt;3\]</span></p>
+</section>
+<section id="ejemplo-2" class="level3" data-number="3.6.4">
+<h3 data-number="3.6.4" class="anchored" data-anchor-id="ejemplo-2"><span class="header-section-number">3.6.4</span> Ejemplo</h3>
+<p>Con los siguiente valores de <span class="math inline">\(\theta\)</span> graficar el correlograma para un <span class="math inline">\(MA(3)\)</span></p>
+<p><span class="math display">\[\theta_1=0.7;\theta_2=0.4;\theta_3=0.2\]</span> <span class="math display">\[y_t=\mu+ u_t +\theta_1u_{t-1}+\theta_2u_{t-2}+\theta_3u_{t-3}\]</span></p>
+<p><span class="math display">\[y_t=\mu+ u_t +0.7u_{t-1}+0.4u_{t-2}+0.2u_{t-3}\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> <span class="cf">function</span>(k, theta) {</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>        q <span class="ot">&lt;-</span> <span class="fu">length</span>(theta) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (k <span class="sc">&gt;</span> q) ACF <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="cf">else</span> {</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>                s1 <span class="ot">&lt;-</span> <span class="dv">0</span>; s2 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(q<span class="sc">-</span>k<span class="sc">+</span><span class="dv">1</span>)) s1 <span class="ot">&lt;-</span> s1 <span class="sc">+</span> theta[i] <span class="sc">*</span> theta[i<span class="sc">+</span>k]</span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(q<span class="sc">+</span><span class="dv">1</span>)) s2 <span class="ot">&lt;-</span> s2 <span class="sc">+</span> theta[i]<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>                ACF <span class="ot">&lt;-</span> s1 <span class="sc">/</span> s2}</span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>        ACF}</span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.7</span>, <span class="sc">-</span><span class="fl">0.45</span>, <span class="sc">-</span><span class="fl">0.05</span>)</span>
+<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>rho.k<span class="ot">&lt;-</span><span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">10</span>)</span>
+<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) rho.k[k]<span class="ot">&lt;-</span><span class="fu">rho</span>(k, theta)</span>
+<span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a>     <span class="fu">c</span>(<span class="dv">1</span>,rho.k),</span>
+<span id="cb70-15"><a href="#cb70-15" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">4</span>, </span>
+<span id="cb70-16"><a href="#cb70-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="fu">expression</span>(rho[k]), </span>
+<span id="cb70-17"><a href="#cb70-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Rezagos"</span>,</span>
+<span id="cb70-18"><a href="#cb70-18" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Correlograma"</span>)</span>
+<span id="cb70-19"><a href="#cb70-19" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="modelos-autorregresivos-ar" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="modelos-autorregresivos-ar"><span class="header-section-number">3.7</span> 3. Modelos autorregresivos (AR)</h2>
+<p>Los modelos autorregresivos, conocidos como modelos <strong>AR</strong> (<em>autorregresive</em>), describen el comportamiento temporal de una variable aleatoria con base en sus propios rezagos y a un error <span class="math inline">\(i.i.d.\)</span> con media cero y varianza <span class="math inline">\(\sigma^2\)</span>. El número de rezagos es conocido como <span class="math inline">\(p\)</span>. La forma general del modelo es:</p>
+<p><span class="math display">\[y_t=\mu+\phi_1y_{t-1}+\phi_2y_{t-2}+...+\phi_py_{t-p}+u_t [40]\]</span></p>
+<p>Si pasamos todos los elementos que contienen <span class="math inline">\(y\)</span> al lado izquierdo tenemos:</p>
+<p><span class="math display">\[y_t-\phi_1y_{t-1}-\phi_2y_{t-2}-...-\phi_py_{t-p}=\mu+u_t [41]\]</span></p>
+<p>Usando la [3] en [41] tenemos:</p>
+<p><span class="math display">\[(1-\phi_1 L-\phi_2 L^2-...-\phi_p L^p)y_t=\mu + u_t \\  \Gamma(L)y_t=\mu+u_t[42]\]</span> Donde:</p>
+<p><span class="math display">\[L^py_t=y_{t-p}\\\Gamma(L)=1-\phi_1 L-\phi_2 L^2-...-\phi_p L^p [43]\]</span></p>
+<p>No hay que olvidar que la condicion fundamental para el uso de estos modelos es que la serie de tiempo {<span class="math inline">\(y_t\)</span>} tiene que ser estacionaria o, en términos financieros, se debe estar seguro que la serie revierte a su media y que no se trata de un proceso con raíz unitaria o explosiva. Se explica la esta idea a través de un ejemplo secillo.</p>
+<p>Tomando el ejemplo 5 del libro de Court y Rengifo partimos:</p>
+<p><span class="math display">\[y_t=\mu +\phi_1y_{t-1}+u_t\]</span> Asumimos que <span class="math inline">\(\mu=0\)</span> y que <span class="math inline">\(\phi_1=0.5\)</span>. Suponemos que en <span class="math inline">\(t=1\)</span> ocurre un shock igual a <span class="math inline">\(3\)</span>, es decir que <span class="math inline">\(u_1=3\)</span> en <span class="math inline">\(t=1\)</span> y cero después de ese periodo. Se supone, además que, <span class="math inline">\(y_0=2\)</span>. Se analiza qué es lo que pasa con <span class="math inline">\(y_t\)</span> conforme avanza el tiempo.</p>
+<p><span class="math display">\[y_1=0+0.5y_0+u_1=0+0.5\times2+3=4\\y_2=0+0.5y_1+u_2=0+0.5\times4+0=2\\y_3=0+0.5y_2+u_3=0+0.5\times2+0=1\\y_4=0+0.5y_3+u_4=0+0.5\times1+0=0.5\\y_5=0+0.5y_4+u_5=0+0.5\times0.5+0=0.25\]</span> Como se puede apreciar, este proceo tiende a la su media <span class="math inline">\(\mu=0\)</span>. Este caso es un <strong>proceo estacionario</strong></p>
+<p>Matemáticamente se puede determinar que un modelo <span class="math inline">\(AR(p)\)</span> es estacionario, a partir de lo siguiente:</p>
+<p><span class="math display">\[(1-\phi_1L)y_t=\mu+u_t [44]\]</span> La condición de estacionariedad para un proceso <span class="math inline">\(AR(p)\)</span> exige que las raíces de la ecuación característica de [44] caigan fuera del círculo unitario, es decir, que todas las raíces sean mayores que uno en valor absoluto. Matemáticamente se expresa de la siguiente forma:</p>
+<p><span class="math display">\[1-\phi_1z=0 [45]\\\phi_1 z=1\\z^*=\frac{1}{\phi_1} [46]\]</span> Se recuerda que las raíces de una ecuación son los valores de <span class="math inline">\(z\)</span> que hacen que la ecuación [45] se cumpla. La condición de estacionariedad implica que todas las raíces de la ecuación [45] sean mayores que uno en valor absoluto. Si se observa la ecuación [46], esta condición implica que:</p>
+<p><span class="math display">\[|z^*|&gt;1\Leftrightarrow |\phi_1|&lt;1 [47]\]</span></p>
+<p>Se rompe la condición de estacionariedad cuando se incumple la [47]</p>
+<p>Ahora se partimos de un <span class="math inline">\(|\phi_1|=1\)</span></p>
+<p><span class="math display">\[y_1=0+y_0+u_1=0+1\times2+3=5\\y_2=0+y_1+u_2=0+1\times5+0=5\\y_3=0+y_2+u_3=0+1\times5+0=5\\y_4=0+y_3+u_4=0+1\times5+0=5\\y_5=0+y_4+u_5=0+1\times5+0=5\]</span> Se aprecia que en este caso a medida que el tiempo transcurre el valor de <span class="math inline">\(y_t\)</span> se mantiene constante y nunca volverá al valor medio de cero. Este es el conocido como <strong>raíz unitaria</strong>. El término raíz unitaria se puede explicar notando que en la ecuación [46] <span class="math inline">\(|\phi_1|=1\)</span>, lo que hace que <span class="math inline">\(z^*=1\)</span> (<strong>raíz unitaria</strong>). Esto, además, implica que esta raíz no caiga fuera del círculo unitario, por lo que el proceso autorregresivo será <strong>no estacionario</strong>. Advertimos que este es un caso especial de procesos autorregresivos no estacionarios.</p>
+<p>Veamos un caso mas generalSe asume que <span class="math inline">\(\phi=2\)</span> y se analiza lo que esto genera en la evolución de <span class="math inline">\(y\)</span></p>
+<p><span class="math display">\[y_1=\mu+\phi_1y_0+u_1=0+2\times2+3=7\\y_2=\phi_1y_1+u_2=0+2\times7+0=14\\y_3=\mu+\phi_1y_2+u_3=0+2\times14+0=28\]</span></p>
+<p>El ejemplo que acabamos de observar, es el casgo general <span class="math inline">\(\phi_1&gt;1\)</span>, el proceso es <strong>no estacionario</strong> o <strong>explosivo</strong>.</p>
+<p>Estos tres casos demuestran de forma sencilla, el papel importante que juega la <strong>condición de estacionariedad</strong> en el uso de este tipo de modelos de series temporales. Esto nos lleva hacia la generalizacion de la condicion de estacionariedad para un modelo <span class="math inline">\(AR(p)\)</span></p>
+<section id="estacionariedad-de-procesos-arp" class="level3" data-number="3.7.1">
+<h3 data-number="3.7.1" class="anchored" data-anchor-id="estacionariedad-de-procesos-arp"><span class="header-section-number">3.7.1</span> 3.1 Estacionariedad de procesos AR(p)</h3>
+<p>Un proceso <strong>AR(p)</strong> será estacionario si todas las raíces de la ecuación característica correspondiente a la ecuación [48], caen fuera del círculo unitario, es decir, si todas las raíces de la siguiente ecuación son mayores que uno en valor absoluto:</p>
+<p><span class="math display">\[1-\phi_1Z-\phi_2Z^2-...-\phi_p    Z^p=0\]</span></p>
+<p><strong>Ejemplo</strong></p>
+<p>¿Es el siguiente proceso AR(2) un proceso estacionario?</p>
+<p><span class="math display">\[
+y_t=\mu-1.31y_{t-1}+0.45y_{t-2}+u_t [49]
+\]</span> Donde:</p>
+<p><span class="math display">\[\phi_1=-1.31\\\phi_2=0.45
+\]</span> Podemos trasnformar la [49] bajo la forma de la ecuación [43] para determinar la ecuación característica.</p>
+<p><span class="math display">\[(1+1.31L-0.45L^2)y_t=\mu + u_t [50]\]</span> Por lo tanto tenemos la siguiente ecuación característica:</p>
+<p><span class="math display">\[1+1.31z-0.45z^2=0 [51]\]</span></p>
+<p>La [51] se resuelve usando la ecuación de segundo grado, que es la siguiente:</p>
+<p><span class="math display">\[z=\frac{-b\pm\sqrt{b^2-4AC}}{2A} [52]\]</span> Resolviendo [51] usando [52], tenemos:</p>
+<p><span class="math display">\[(z-3.54)(z+0.63)=0\\z_1^*=3.54\\z_2^*=-0.63 [53]\]</span> La primera raíz es mayor que uno en valor valor absoluto <span class="math inline">\(|z^*_1|&gt;1\)</span>, pero <span class="math inline">\(|Z_2|&lt;1\)</span>por lo tanto el proceso es no estacionario.</p>
+<p>Procedemos a determinar la media, la varianza, las autocovarianzas y las autocorrelaciones correpondientes a un proceso <span class="math inline">\(AR(1)\)</span>. Luego, se generalizará los resultados usando el método de <strong>Yule-Walker</strong></p>
+<p>Partimos de la técnica basada en el <strong>teorema de descomposición de Wold</strong>. La método consiste en hallar momentos estadísticos que se necesitan para entender la propiedades de los precesos <strong>AR(p)</strong> consiste en transformar el proceso <strong>AR(p)</strong> en un <strong>MA</strong><span class="math inline">\((\infty)\)</span>. Esta conversión es posible si y solo si el proceso autorregresivo es un proceso estacionario. Para demostrar estos conceptos partimos de un proceso <strong>AR(1)</strong>.</p>
+<p><span class="math display">\[y_t=\mu+\phi_1y_{t-1}+e_t [54]\]</span></p>
+<p>Tomando la esperanza matemática tenemos:</p>
+<p><span class="math display">\[E(y_t)=E(\mu+\phi_1y_{t-1}+e_t)=E(\mu)+\phi_1E(y_{t-1})+E(e_t)=\mu+\phi_1E(y_{t-1})[55]\]</span></p>
+<p>Se rezaga la [54]</p>
+<p><span class="math display">\[y_{t-1}=\mu+\phi_1y_{t-2}+e_{t-1} [56]\]</span> Reemplazamo [56] en [55]</p>
+<p><span class="math display">\[E(y_t)=\mu+\phi_1\times E(\mu+\phi_1y_{t-2}+e_{t-1})=(1+\phi_1)\times\mu+\phi_1^2E(y_{t-2}) [57]\]</span> Rezagamos, una vez más, la ecuación [54]</p>
+<p><span class="math display">\[y_{t-2}=\mu+\phi_1y_{t-3}+e_{t-2} [58]\]</span> Usando [58] en [57], tenemos:</p>
+<p><span class="math display">\[E(y_t)=(1+\phi_1)\times\mu+\phi_1^2E(\mu+\phi_1y_{t-3}+u_{t-2})=\\(1+\phi_1)\times\mu+\phi_1^2[\mu+\phi_1E(y_{t-3})]=\\\mu+\phi_1\mu+\phi_1^2\mu+\phi_1^3E(y_{t-3})=\\\mu(1+\phi_1+\phi_1^2)+\phi_1^3E(y_{t-3})[59]\]</span> Se rezaga hasta obtener el valor inicial de <span class="math inline">\(y\)</span> (<span class="math inline">\(y_0\)</span>), en teoría, rezagando hasta el infinito, se obtendrá:</p>
+<p><span class="math display">\[E(y_t)=(1+\phi_1+\phi_1^2+\phi_1^3+...)\mu+\phi_1^{\infty}y_0 [60]\]</span> Usando la condición de estacionariedad <span class="math inline">\(|z^*|&gt;1\Leftrightarrow |\phi_1|&lt;1\)</span>. Se puede observar, si el proceso <strong>AR(1)</strong> es estacionario (<span class="math inline">\(|\phi_1|&lt;1\)</span>), la segunda parte de la ecuación tiene a cero, por lo tanto desaparecerá. El factor que acompaña a <span class="math inline">\(\mu\)</span>, será una suma geométrica. Por lo tanto, bajo el supuesto de estacionariedad, la ecuación [60] puede ser escrita asi:</p>
+<p><span class="math display">\[E(y_t)=\frac{\mu}{1-\phi_1} [61]\]</span> Una vez comprendido este resultado, y suponiendo que el proceso es estacionario, compete demostrar la forma en la que otros momentos son calculados. Comenzamos con la varianza, asumimos que, la media del modelo <span class="math inline">\(\mu=0\)</span>.</p>
+<p>Usaremos el teorema de descomposición de Wold, que convierte al proceso autoregresivo en uno de medias móviles. Partimos de un proceso <span class="math inline">\(AR(1)\)</span> <strong>estacionario</strong>, expresados de la siguiente forma:</p>
+<p><span class="math display">\[(1-\phi_1L)y_t=e_t \\ y_t=\frac{1}{1-\phi_1L}e_t [62]\]</span> no se olvide que la fracción es una progresión geométrica, entonces se puede escribir como:</p>
+<p><span class="math display">\[y_t=(1+\phi_1L+\phi_2L^2+\phi_3L^3+...)e_t [63]\]</span></p>
+<p>No es mas que un modelo <span class="math inline">\(MA(\infty)\)</span>.</p>
+<p>Una vez establecido el <strong>Teorema de descomposición de Wold</strong> se calcula la varianza y las covarianzas del proceso <strong>AR(1)</strong>.</p>
+</section>
+<section id="obtención-de-la-varianza" class="level3" data-number="3.7.2">
+<h3 data-number="3.7.2" class="anchored" data-anchor-id="obtención-de-la-varianza"><span class="header-section-number">3.7.2</span> Obtención de la varianza</h3>
+<p><span class="math display">\[E[(y_t-E(y_t))^2]=E[(y_t-\mu)^2]=E[y_t^2]=\gamma_0 [64]\]</span> Usando [64] en [65] tenemos:</p>
+<p><span class="math display">\[\gamma_0=E[(e_t+\phi_1e_{t-1}+\phi_1^2e_{t-2}+....)\times (e_t+\phi_1e_{t-1}+\phi_1^2e_{t-2}+.....)] [65]\]</span> Operando tenemos:</p>
+<p><span class="math display">\[\gamma_0=E[(e_t^2+\phi_1^2e_{t-1}^2+\phi_1^4e_{t-2}^2+\phi_1^6e_{t-3}^2+...+t.cruzados)] [66]\]</span> Recodar que los errores son ruido blanco, la covarianza entre los errores en diferentes periodos de tiempo deben ser igual a cero.</p>
+<p><span class="math display">\[\gamma_0=E(e_t^2)+\phi_1^2E(e_{t-1}^2)+\phi_1^4E(e_{t-2}^2)+\phi_1^6E(e_{t-3}^2)+...\\\gamma_0=\sigma^2+\phi_1^2\sigma^2+\phi_1^4\sigma^2+\phi_1^6\sigma^2+...\\\gamma_0=\sigma^2(1+\phi_1^2+\phi_1^4+\phi_1^6+...) [68]\]</span> Como el proceso <strong>AR(1)</strong> es estacionario, el segundo término es un suma geométrica. Entonces tenemos:</p>
+<p><span class="math display">\[\gamma_0=\frac{\sigma^2}{1-\phi_1^2} [69]\]</span></p>
+</section>
+<section id="obtención-de-la-autocovarianzas" class="level3" data-number="3.7.3">
+<h3 data-number="3.7.3" class="anchored" data-anchor-id="obtención-de-la-autocovarianzas"><span class="header-section-number">3.7.3</span> Obtención de la autocovarianzas</h3>
+<p><strong>La autocovarianza de primer orden</strong></p>
+<p><span class="math display">\[cov(y_t,y_{t-1})=E[(e_t+\phi_1e_{t-1}+\phi_1^2e_{t-2}+...)\times (e_{t-1}+\phi_1e_{t-2}+\phi_1^2e_{t-3}+\phi_1^3e_{t-4}+...)]\\\gamma_1=E[(\phi_1e_{t-1}^2+\phi_1^3e_{t-2}^2+\phi_1^5e_{t-3}^2+...+t.cruzados)]\\\gamma_1=\phi_1E(e_{t-1}^2)+\phi_1^3E(e_{t-2}^2)+\phi_1^5E(e_{t-3}^2)+...\\\gamma_1=\phi_1\sigma^2+\phi_1^3\sigma^2+\phi_1^5\sigma^2+...\\\gamma_1=\sigma^2\phi_1[1+\phi_1^2+\phi_1^4+...]\\\gamma_1=\frac{\sigma^2\phi_1}{1-    \phi_1^2} [70]\]</span> <strong>La autocovarianza de segundo orden</strong></p>
+<p><span class="math display">\[cov(y_t,y_{t-2})=E[(u_t+\phi_1u_{t-1}+\phi_1^2u_{t-2}+...)\times (u_{t-2}+\phi_1u_{t-3}+\phi_1^2u_{t-4}+\phi_1^3u_{t-5}+...)]\\\gamma_2=E[(\phi_1^2u_{t-2}^2+\phi_1^4u_{t-3}^2+\phi_1^6u_{t-4}^2+...+t.cruzados)]\\\gamma_2=\phi_1^2E(u_{t-2}^2)+\phi_1^4E(u_{t-3}^2)+\phi_1^6E(u_{t-4}^2)+...\\\gamma_2=\phi_1^2\sigma^2+\phi_1^4\sigma^2+\phi_1^6\sigma^2+...\\\gamma_2=\sigma^2\phi_1^2[1+\phi_1^2+\phi_1^4+...]\\\gamma_2=\frac{\sigma^2\phi_1^2}{1+\phi_1^2} [71]\]</span> <strong>La autocovarianza de tercer orden</strong></p>
+<p><span class="math display">\[cov(y_t,y_{t-3})=\gamma_3=\frac{\sigma^2\phi_1^3}{1+\phi_1^2} [72]\]</span> Si se sigue este mismo proceso se podrán hallar las autocovarianzas de orden superior. Se advierte que a diferencia de los procesos <strong>MA(q)</strong>, las autocovarianzas no se truncan después del orden del modelo <strong>(p)</strong>.</p>
+</section>
+<section id="obtención-de-las-autocorrelaciones" class="level3" data-number="3.7.4">
+<h3 data-number="3.7.4" class="anchored" data-anchor-id="obtención-de-las-autocorrelaciones"><span class="header-section-number">3.7.4</span> Obtención de las autocorrelaciones</h3>
+<p>El proceso para hallar <span class="math inline">\(\rho\)</span> siempre es el misma, esto es, la autocorrelación divida para la varianza.</p>
+<p><span class="math display">\[\rho_j=\frac{\gamma_j}{\gamma_0} [73]\]</span> Por lo tanto las autocorrelaciones son:</p>
+<p><strong>Primer orden</strong></p>
+<p><span class="math display">\[\rho_1=\frac{\frac{\sigma^2\phi_1}{1+\phi_1^2}}{\frac{\sigma^2}{1+\phi_1^2}}=\phi_1 [74]\]</span> <strong>Segundo orden</strong></p>
+<p><span class="math display">\[\rho_2=\frac{\frac{\sigma^2\phi_1^2}{1+\phi_1^2}}{\frac{\sigma^2}{1+\phi_1^2}}=\phi_1^2[75]\]</span> <strong>Tercer orden</strong></p>
+<p><span class="math display">\[\rho_3=\frac{\frac{\sigma^2\phi_1^3}{1+\phi_1^2}}{\frac{\sigma^2}{1+\phi_1^2}}=\phi_1^3[76]\]</span> Generalizando:</p>
+<p><span class="math display">\[\rho_j=\phi^j[77]\]</span> Como se puede apreciar, la autocorrelación del modelo <strong>AR(1)</strong> decrece conforme el número de rezagos (<span class="math inline">\(j\)</span>) crece, dado que el modelo es estacionario, es decir, que <span class="math inline">\(|\phi&lt;1|\)</span>. Como es sabido, si se representan estas autocorrelaciones en el tiempo, se estará generando el correlograma del modelo.</p>
+</section>
+<section id="ejemplo-3" class="level3" data-number="3.7.5">
+<h3 data-number="3.7.5" class="anchored" data-anchor-id="ejemplo-3"><span class="header-section-number">3.7.5</span> Ejemplo</h3>
+<p>Si se tiene un modelo AR(1) con el siguiente parámetro: <span class="math inline">\(\phi=0.8\)</span>. Con este valor se pueden obtener las autocorrelaciones de la siguiente manera (solo se consideran tres de ellas):</p>
+<p><span class="math display">\[\rho_0=\frac{\gamma_0}{\gamma_0}=1\]</span> <span class="math display">\[\rho_1=\phi=0.80\]</span> <span class="math display">\[\rho_2=\phi^2=0.64\]</span> <span class="math display">\[\rho_3=\phi^3=0.512\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>funcion.phi <span class="ot">&lt;-</span> <span class="cf">function</span>(phi,i){</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>        phi<span class="sc">^</span>i</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">11</span>, <span class="fu">funcion.phi</span>(<span class="fl">0.63</span>,<span class="dv">0</span><span class="sc">:</span><span class="dv">11</span>),</span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">4</span>, </span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Correlograma AR(1)"</span>, </span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"rezagos"</span>, </span>
+<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="fu">expression</span>(rho[j]))</span>
+<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Correlograma para un modelo autorregresivo de orden-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Existe un método más directo para hallar las autocorrelaciones de los modelos <strong>AR(p)</strong>. Este método es un sistema de ecuaciones conocido como el sistema de ecuaciones de <strong>Yule-Walker</strong> y que se describe a continuación:</p>
+<p><span class="math display">\[\rho_1=\phi_1\rho_0+\phi_2\rho_1+\phi_3\rho_2+...+\phi_{p-1}\rho_{p-2}+\phi_p\rho_{p-1}\]</span> <span class="math display">\[\rho_2=\phi_1\rho_1+\phi_2\rho_0+\phi_3\rho_1+...+\phi_{p-1}\rho_{p-3}+\phi_p\rho_{p-2}\]</span> <span class="math display">\[\rho_3=\phi_1\rho_2+\phi_2\rho_1+\phi_3\rho_0+...+\phi_{p-1}\rho_{p-4}+\phi_p\rho_{p-3}\]</span> <span class="math display">\[...\]</span> <span class="math display">\[\rho_p=\phi_1\rho_{p-1}+\phi_2\rho_{p-2}+\phi_3\rho_{p-3}+...+\phi_{p-1}\rho_1+\phi_p\rho_0 [78]\]</span></p>
+</section>
+</section>
+</section>
+<section id="tarea" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Tarea</h1>
+<ul>
+<li>hallar los correlogramas para el modeloa MA(3)</li>
+</ul>
+<p><span class="math display">\[
+\theta_1=0,8
+\]</span></p>
+<p><span class="math display">\[
+\theta_2=0,6
+\]</span></p>
+<p><span class="math display">\[
+\theta_3=-0,01
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span><span class="fl">0.8</span>; p2<span class="ot">=</span> <span class="fl">0.21</span>; p3<span class="ot">=</span><span class="sc">-</span><span class="fl">0.01</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>r1<span class="ot">=</span>(p1<span class="sc">+</span>p2<span class="sc">*</span>p3)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>p2<span class="sc">-</span>p1<span class="sc">*</span>p3<span class="sc">-</span>p3<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>r2<span class="ot">=</span>p1<span class="sc">*</span>r1<span class="sc">+</span>p2<span class="sc">+</span>p3<span class="sc">*</span>r1</span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>r3<span class="ot">=</span>p1<span class="sc">*</span>r2<span class="sc">+</span>p2<span class="sc">*</span>r1<span class="sc">+</span>p3</span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>r1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>r2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>r3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<ul>
+<li>Para el modelo <span class="math inline">\(AR(1)\)</span>.</li>
+</ul>
+<p>Hallar las 10 primeras autocorrelaciones para <span class="math inline">\(\phi=0.63\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>funcion.phi <span class="ot">&lt;-</span> <span class="cf">function</span>(phi,i){</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>        phi<span class="sc">^</span>i</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">11</span>, <span class="fu">funcion.phi</span>(<span class="fl">0.63</span>,<span class="dv">0</span><span class="sc">:</span><span class="dv">11</span>),<span class="at">pch=</span><span class="dv">4</span>, </span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Correlograma AR(1)"</span>, </span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"rezagos"</span>, <span class="at">ylab=</span><span class="fu">expression</span>(rho[j]))</span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Resolución de la tarea-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Existe un método más directo para hallar las autocorrelaciones de los modelos <strong>AR(p)</strong> es el método de <strong>Yule-Walker</strong>. Usaremos un ejemplo para su ilustración con un modelo <strong>AR(2)</strong></p>
+<p><span class="math display">\[y_t=\mu+\phi_1y_{t-1}+\phi_2y_{t-2}+u_t\]</span></p>
+<p>Suponemos que <span class="math inline">\(\phi_1=0.7\)</span> y <span class="math inline">\(\phi_2=0.2\)</span>.</p>
+<p>Al emplear las ecuaciones de <strong>Yule-Walker</strong> tendremos:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\rho_0&amp;=\frac{\gamma_0}{\gamma_0}=1\\
+\rho_1&amp;=\phi_1+\phi_2\rho_1=\frac{\phi_1}{1-\phi_2}=\frac{0.7}{1-0.2}=0.875\\
+\rho_2&amp;=\phi_1\rho_1+\phi_2=0.7\times0.875+0.2=0.8125\\
+\rho_3&amp;=\phi_1\rho_2+\phi_2\rho_1=0.7\times0.8125+0.2\times0.875=0.7438\\
+\rho_4&amp;=\phi_1\rho_3+\phi_2\rho_2=0.7\times0.7438+0.2\times0.8125=0.68316\\
+\rho_5&amp;=\phi_1\rho_4+\phi_2\rho_3=0.70\times0.68316+0.2\times0.7438=0.6269\\
+\rho_6&amp;=\phi_1\rho_5+\phi_2\rho_4=...
+\end{aligned}
+\]</span></p>
+</section>
+<section id="modelo-autorregresivo-de-medias-móviles-arma" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Modelo autorregresivo de medias móviles (ARMA)</h1>
+<p>Una vez que se ha presentados los modelos <strong>AR(p)</strong> y <strong>MA(q)</strong> se puede formular el modelo conocido como <strong>ARMA(p,q)</strong>, como su nombre lo indica, este modelo resulta de combinar los modelos AR(p) y MA(q). La forma general es la siguiente:</p>
+<p><span class="math display">\[
+y_t=\mu+\phi_1y_{t-1}+...+\phi_py_{t-p}+e_t+\theta_1e_{t-1}+...+\theta_qe_{t-q}\hspace{0.3cm}[80]
+\]</span></p>
+<p>Se puede expresar como:</p>
+<p><span class="math display">\[
+\Phi(L)y_t=\mu+\Theta(L)e_t \hspace{0.3cm}[81]
+\]</span></p>
+<p>Donde:</p>
+<p><span class="math display">\[
+\Phi(L)=1-\phi_1L-\phi_2L^2-...-\phi_pL^p
+\]</span></p>
+<p><span class="math display">\[
+\Theta(L)=1+\theta_1L+\theta_2L^2+...+\theta_qL^q \hspace{0.3cm}[82]
+\]</span></p>
+<p>Seguimos asumiendo que los errores son i.i.d. con media cero y varianza <span class="math inline">\(\sigma^2\)</span></p>
+</section>
+<section id="simulación-de-modelos" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Simulación de modelos</h1>
+<p><span class="math display">\[
+y_t=\mu+\theta_1e_{t-1}+\theta_2e_{t-2}+\theta_3e_{t-3}+e_t
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.6</span>, <span class="fl">0.4</span>)</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>y<span class="ot">&lt;-</span>w<span class="ot">&lt;-</span><span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">1000</span>){</span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(q <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) y[t]<span class="ot">&lt;-</span>y[t]<span class="sc">+</span>theta[q]<span class="sc">*</span>w[t<span class="sc">-</span>q]</span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y, </span>
+<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">col=</span><span class="st">"orange"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/simulacion-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/simulacion-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajuste del modelo MA</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>y.ma <span class="ot">&lt;-</span><span class="fu">arima</span>(y, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">3</span>))</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(y.ma,</span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">type =</span> <span class="st">"text"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=============================================
+                      Dependent variable:    
+                  ---------------------------
+                               y             
+---------------------------------------------
+ma1                        0.790***          
+                            (0.031)          
+                                             
+ma2                        0.566***          
+                            (0.035)          
+                                             
+ma3                        0.396***          
+                            (0.032)          
+                                             
+intercept                   -0.032           
+                            (0.090)          
+                                             
+---------------------------------------------
+Observations                 1,000           
+Log Likelihood            -1,452.415         
+sigma2                       1.068           
+Akaike Inf. Crit.          2,914.830         
+=============================================
+Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+</div>
+</div>
+<section id="resolver-el-polinomio-para-determinar-la-estacionariedad" class="level4" data-number="6.0.0.1">
+<h4 data-number="6.0.0.1" class="anchored" data-anchor-id="resolver-el-polinomio-para-determinar-la-estacionariedad"><span class="header-section-number">6.0.0.1</span> Resolver el polinomio para determinar la estacionariedad</h4>
+<p><span class="math display">\[
+\begin{aligned}
+y_t&amp;= \mu+\theta_1e_{t-1}+\theta_2e_{t-2}+\theta_3e_{t-3}+e_t\\
+&amp;= 0.8e_{t-1}+0.6e_{t-2}+0.4e_{t-3}+e_t\\
+&amp;\text{Extrayendo el polinomio}\\
+0&amp;=1+0.8r+0.6r^2+0.4r^3
+\end{aligned}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># REvisar</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fl">0.4</span></span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>coeficientes <span class="ot">&lt;-</span> <span class="fu">c</span>(a, b, c, d)</span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>raices <span class="ot">&lt;-</span> <span class="fu">polyroot</span>(coeficientes)</span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(raices)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.06443283+1.348761e+00i -1.37113433+4.805639e-17i
+[3] -0.06443283-1.348761e+00i</code></pre>
+</div>
+</div>
+<p>Ejemplo con datos reales</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>www<span class="ot">&lt;-</span><span class="st">"https://raw.githubusercontent.com/prabeshdhakal/Introductory-Time-Series-with-R-Datasets/master/pounds_nz.dat"</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>y1<span class="ot">&lt;-</span><span class="fu">read.table</span>(www, <span class="at">header =</span> T)</span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Declarar la serie temporal</span></span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>y.ts <span class="ot">&lt;-</span><span class="fu">ts</span>(y1, <span class="at">start =</span> <span class="dv">1991</span>,  </span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">frequency =</span> <span class="dv">4</span>)</span>
+<span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-10"><a href="#cb85-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(y.ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(y.ts, <span class="at">lag.max =</span> <span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-14-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>y.ts.ma<span class="ot">&lt;-</span><span class="fu">arima</span>(y.ts, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(y.ts.ma,</span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">type =</span> <span class="st">"text"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=============================================
+                      Dependent variable:    
+                  ---------------------------
+                             y.ts            
+---------------------------------------------
+ma1                        1.000***          
+                            (0.072)          
+                                             
+intercept                  2.833***          
+                            (0.065)          
+                                             
+---------------------------------------------
+Observations                  39             
+Log Likelihood               4.763           
+sigma2                       0.042           
+Akaike Inf. Crit.           -3.527           
+=============================================
+Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+</div>
+</div>
+<p>Dado que <span class="math inline">\(\theta_1=1\)</span> no se cumple la condición de estacionariedad <span class="math inline">\(|z^*|&gt;1\Leftrightarrow |\theta_1|&lt;1\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>y.ts.ma2<span class="ot">&lt;-</span><span class="fu">arima</span>(y.ts, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">4</span>))</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(y.ts.ma2,</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">type =</span> <span class="st">"text"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=============================================
+                      Dependent variable:    
+                  ---------------------------
+                             y.ts            
+---------------------------------------------
+ma1                        1.648***          
+                            (0.182)          
+                                             
+ma2                        1.473***          
+                            (0.296)          
+                                             
+ma3                        1.160***          
+                            (0.314)          
+                                             
+ma4                         0.335**          
+                            (0.159)          
+                                             
+intercept                  2.853***          
+                            (0.107)          
+                                             
+---------------------------------------------
+Observations                  39             
+Log Likelihood              23.389           
+sigma2                       0.015           
+Akaike Inf. Crit.           -34.778          
+=============================================
+Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+</div>
+</div>
+<p>Nuevamente no se cumple la condición de estacionariedad, pues el <span class="math inline">\(\theta_1&gt;1\)</span></p>
+<p>El punto de análisis ahora es determinar matemáticamente cuál es el modelo que mejor se ajusta a los datos. Para ellos se introduce un concepto adicional conocido como <strong>autocorrelación parcial (PAC)</strong>.</p>
+<p>La <strong>PAC</strong> mide la correlación existente entre <span class="math inline">\(y_t\)</span> e <span class="math inline">\(y_{t-k}\)</span> después de se ha removido la influencia de las variables intermedias <span class="math inline">\(y_{t-1}, y_{t-2},...,y_{t-k-1}\)</span>. La autocorrelación parcial se define como la siguiente correlación condicional:</p>
+<p><span class="math display">\[\rho_{kk}=corr(y_t,y_{t-k}|y_{t-1}, y_{t-2},...,y_{t-k-1}) [83]\]</span></p>
+<p>Donde <span class="math inline">\(y_t\)</span> tiene media cero. Se puede demostrar que la autocorrelación parcial puede ser obtenida por medio de una simple regresión lineal tal como se muestra a continuación:</p>
+<p><span class="math display">\[y_t=\phi_{k1}y_{t-1}+\phi_{k2}y_{t-2}+...+\phi_{kk}y_{t-k}+\epsilon_t [84]\]</span> Donde <span class="math inline">\(\hat{\rho}_{kk}=\hat{\phi}_{kk}\)</span>, notar que la regresión no tiene constante y que los datos representan diferencias con respecto a la media muestral (centrados). Asimismo, se puede demostrar matemáticamente que:</p>
+<p><span class="math display">\[\rho_{11}=\rho_1 [85]\]</span> <span class="math display">\[\rho_{12}=\frac{\rho_2-\rho_1}{\rho_2} [86]\]</span> Finalmente, si el proceso aleatorio {<span class="math inline">\(y_t\)</span>} es ruido blanco distribuido asintóticamente como una normal, tal que:</p>
+<p><span class="math display">\[\sqrt{n}\times\hat{\rho}_{jk}\rightarrow N(0, I_k) [87]\]</span> Donde <span class="math inline">\(\hat{\rho}_{jk}=(\hat\rho_{11},\hat\rho_{12},...,\hat\rho_{1k})\)</span> De acuerdo a [87], se pueden construir intervalos de confianza para la autocorrelación parcial poblacional. Estos intervalos de confianza estarán daddos por:</p>
+<p><span class="math display">\[\rho_{jk}\in[\hat{\rho}_{jk}\pm z_{\alpha/2}\times\frac{1}{\sqrt{n}}] [88]\]</span> Este método permite ver la existencia de autocorrelación parcial de un orden específico y sirven para verificar si las autocorrelaciones parciales son en realidad un ruido blanco. Si esto último ocurre, lo que se espera es que cada autocorrelación parcial caiga dentro de las bandas señaladas en la ecuación</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(y.ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/PACF-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>¡¡Concepto clave!!</strong></p>
+<p><strong>Las autocorrelaciones parciales juegan un rol bastante importante en ayudar a determinar el número de rezagos (p) de un proceso AR</strong>.</p>
+<p>Para entender esto se plantea el siguiente modelo AR(3):</p>
+<p><span class="math display">\[
+y_t=\mu+\phi_1y_{t-1}+\phi_2y_{t-2}+\phi_3y_{t-3}+e_t[89]
+\]</span> <strong>¡¡Concepto clave!!</strong></p>
+<p>Como se puede apreciar, desde el punto de vista de las autocorrelaciones parciales lo que se está afirmando al considerar <span class="math inline">\(p= 3\)</span> es que la influencia de <span class="math inline">\(y_{t-3}\)</span> en <span class="math inline">\(y_t\)</span> (después de haber controlado la influencia de <span class="math inline">\(y_{t-1}\)</span> e <span class="math inline">\(y_{t-2}\)</span>) es significativa, es decir, que la influencia de rezagos superiores a 3 es nula. Esto implica que las <strong>autocorrelaciones parciales</strong> de un proceso AR(p) serán significativas solo hasta <span class="math inline">\(p\)</span> y de ahí serán iguales a cero</p>
+<p>Ahora, se analizará qué es lo que pasa en el caso de los modelos MA(q). Se recuerda que estos modelos pueden ser expresados como modelos <span class="math inline">\(AR(\infty)\)</span> si y solo si son <strong>invertibles</strong>. En otras palabaras, si un modelo <strong>MA(q)</strong> se puede escribir como <span class="math inline">\(AR(\infty)\)</span>, las autocorrelaciones parciales decaerán asintóticamente ya que en un modelo <span class="math inline">\(AR(\infty)\)</span>, existirán <span class="math inline">\(\infty\)</span> autocorrelaciones parciales que ejercen influencia significativa sobre la variable <span class="math inline">\(y_t\)</span></p>
+<p>Finalmente, lo que pasará en un proceso <strong>ARMA(p,q)</strong> será que las autocorrelaciones parciales decaerán asintóticamente, al igual que en el proceso <strong>MA(q)</strong> invertible. La lógica de esto es bastante fácil de entender. Se recuerda que el modelo <strong>ARMA(p,q)</strong>, como el presentado en la ecuación (80), es simplemente un proceso mixto donde al momento de calcular las autocorrelaciones parciales el modelo dominante será la parte <strong>MA(q)</strong>, que es la que hace que las autocorrelaciones parciales decaigan asintóticamente.</p>
+<p>Ahora se tienen todos los elementos necesarios para, gráficamente, poder determinar con cierto grado de certeza el modelo adecuado que se ajuste a los datos que se desean analizar. *Teóricamente**, una serie de tiempo estacionaria {<span class="math inline">\(y_t\)</span>} sigue un proceso:</p>
+<ul>
+<li><p><strong>MA(q)</strong>, si sus autocorrelaciones son iguales a cero después de <strong>q</strong> rezagos y sus autocorrelaciones parciales decaen asintóticamente.</p></li>
+<li><p><strong>AR(p)</strong> si sus autocorrelaciones decaen asintóticamente y sus autocorrelaciones parciales son ceros después de <em>p</em> rezagos</p></li>
+<li><p><strong>ARMA(p,q)</strong> si sus autocorrelaciones decaen asintóticamente al igual que sus autocorrelaciones parciales</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(y.ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Ejemplo-demostrativo-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(<span class="fu">diff</span>(y.ts))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Ejemplo-demostrativo-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>)</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">diff</span>(y.ts))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Ejemplo-demostrativo-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(<span class="fu">diff</span>(y.ts), <span class="at">lag.max =</span> <span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Ejemplo-demostrativo-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(y.ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Time-Series [1:39, 1] from 1991 to 2000: 2.92 2.94 3.17 3.25 3.35 ...
+ - attr(*, "dimnames")=List of 2
+  ..$ : NULL
+  ..$ : chr "xrate"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>ma1<span class="ot">&lt;-</span><span class="fu">arima</span>(y.ts, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(ma1, <span class="at">type =</span> <span class="st">"text"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=============================================
+                      Dependent variable:    
+                  ---------------------------
+                             y.ts            
+---------------------------------------------
+ma1                        1.000***          
+                            (0.072)          
+                                             
+intercept                  2.833***          
+                            (0.065)          
+                                             
+---------------------------------------------
+Observations                  39             
+Log Likelihood               4.763           
+sigma2                       0.042           
+Akaike Inf. Crit.           -3.527           
+=============================================
+Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(ma1<span class="sc">$</span>residuals, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Ejemplo-demostrativo-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ejemplo-para-el-modelo-arma" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="ejemplo-para-el-modelo-arma"><span class="header-section-number">6.1</span> Ejemplo para el modelo ARMA</h2>
+<p><strong>Simulando y ajustando</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>y2<span class="ot">&lt;-</span><span class="fu">arima.sim</span>(<span class="at">n=</span><span class="dv">10000</span>, </span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>              <span class="fu">list</span>(<span class="at">ar =</span> <span class="fl">0.6</span>, <span class="at">ma =</span> <span class="fl">0.5</span>))</span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y2, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"orange"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/simulacion-ajuste-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">arima</span>(y2, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        ar1         ma1   intercept 
+ 0.61026484  0.49989592 -0.02660831 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(y2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/simulacion-ajuste-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(y2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/simulacion-ajuste-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="tarea-1" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Tarea:</h1>
+<p>Simulador datos para un modelo ARMA(2,2) y, verificar si se cumplen o no las condiciones para determinar estos modelos.</p>
+</section>
+<section id="criterios-de-información" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Criterios de información</h1>
+<p>Para determinar el modelo de series de tiempo apropiado, se utilizan tres criterios de información. La idea general de cada uno de estos criterios es que si se aumenta el número de rezagos esto generará dos cosas: primera, el ajuste del modelo mejorará porque la desviación estándar de los errores disminuirá; segundo, el modelo será más complejo de estimar, es decir, que se estará sacrificando la <strong>parsimonia</strong> del modelo a expensas de un mejor ajuste.</p>
+<p><span class="math display">\[y_t=\mu+\phi_1y_{t-1}+u_t+\theta_1u_{t-1} ARMA(1,1) [EJ1]\]</span></p>
+<p>En modelos de series de tiempo la idea de <strong>parsimonia</strong> se refiere a que siempre se preferirá un modelo con un menor número de rezagos si la influencia marginal de incluir rezagos adicionales en el modelo es baja. Esto se puede entender fácilmente recordando que el número de grados de libertad en los modelos está dado por <span class="math inline">\(n-k\)</span>, donde <span class="math inline">\(n\)</span> es el número de observaciones y <span class="math inline">\(k\)</span> el número de parámetros (que incluye al intercepto y a los rezagos, ya sea de la variable endógena <span class="math inline">\(yt\)</span> como de los errores). Por lo tanto, si se incluyen más rezagos, <span class="math inline">\(k\)</span> se incrementará el número de párametros a ser estimados y los grados de libertad se reducirán, lo que a su vez afectará la inferencia estadística que se desea realizar. Esto es particularmente es cierto cuando el tamaño de la muestra es pequeño.</p>
+<section id="ejemplo-4" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="ejemplo-4"><span class="header-section-number">8.1</span> Ejemplo:</h2>
+<p>En un modelo <strong>ARMA(1,1)</strong>, tengo tres parámetros a estimar (<span class="math inline">\(k\)</span>), si <span class="math inline">\(n=30\)</span>,entoces los grados de libertad serán <span class="math inline">\(n-k=30-3=27\)</span> ver (EJ1), ¿Qué pasa si el modelo es un ARMA(2,2)?</p>
+<p><span class="math display">\[y_t=\mu+\phi_1y_{t-1}+\phi_2y_{t-2}+u_t+\theta_1u_{t-1}+\theta_2u_{t-2} [EJ2]\]</span> En un modelo <strong>ARMA(2,2)</strong> <span class="math inline">\(k=5\)</span> si <span class="math inline">\(n=30\)</span>, entoces <span class="math inline">\(n-k=30-5=25\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.178813</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.228139</code></pre>
+</div>
+</div>
+<p>Presentamos tres métodos que permiten determinar el número adecuado de rezagos, los cuales son:</p>
+<ul>
+<li><strong>Akaike information criteria (AIC)- Criterio de Información de Akaike</strong></li>
+</ul>
+<p><span class="math display">\[AIC=ln(e´\times e)-\frac{2k}{n} [90]\]</span> * <strong>Bayesian information criteria (BIC) o Shwarz Information Criteria- Criterio de Información Bayesiano</strong></p>
+<p><span class="math display">\[BIC=ln(e´\times e)-\frac{ln(k)}{n} [91]\]</span> * <strong>Hannan-Quinn information criteria (HQIC)- Criterio de Información de Hannan-Quinn</strong></p>
+<p><span class="math display">\[HQIC=ln(e´\times e)-\frac{2\times ln[ln(k)]}{n} [92]\]</span> Donde <span class="math inline">\(e´\times e\)</span> es el estimador de la varianza de los errores de la regresión, en todos los casos.</p>
+<p>La idea es seleccionar el número de rezagos que haga que se minimice el criterio de información escogido. En la práctica, los métodos más usados son el <strong>AIC</strong> y el <strong>BIC</strong>. Sin embargo, ambos métodos no son perfectos y será necesaria cierta <strong>discrecionalidad</strong> al momento de escoger el mejor modelo. El <strong>AIC</strong> es eficiente pero sesgado, mientras que el <strong>BIC</strong> es insesgado pero ineficiente. Es por esto que se usa cierta lógica que puede estar dada por algún modelo teórico o por la frecuencia de los datos con la que se está trabajando. Por ejemplo, si se trabaja con datos diarios de la bolsa de valores, lo común es que el número de rezagos máximos sean iguales a 5 (una semana laboral). Si se trabajan con datos mensuales, por lo general se asume que 12 es el número máximo de rezagos (un año)</p>
+</section>
+</section>
+<section id="section" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> </h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>www<span class="ot">&lt;-</span><span class="st">"https://raw.githubusercontent.com/prabeshdhakal/Introductory-Time-Series-with-R-Datasets/master/cbe.dat"</span></span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>CBE <span class="ot">&lt;-</span><span class="fu">read.table</span>(www, <span class="at">header =</span> T)</span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a>Elec.ts<span class="ot">&lt;-</span><span class="fu">ts</span>(CBE[,<span class="dv">3</span>], </span>
+<span id="cb110-6"><a href="#cb110-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">start =</span> <span class="dv">1958</span>, </span>
+<span id="cb110-7"><a href="#cb110-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb110-8"><a href="#cb110-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(Elec.ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>Time <span class="ot">&lt;-</span><span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(Elec.ts)</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>Imth<span class="ot">&lt;-</span><span class="fu">cycle</span>(Elec.ts)</span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>Elec.lm <span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="fu">log</span>(Elec.ts)<span class="sc">~</span>Time<span class="sc">+</span><span class="fu">I</span>(Time<span class="sc">^</span><span class="dv">2</span>)<span class="sc">+</span><span class="fu">factor</span>(Imth))</span>
+<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-7"><a href="#cb111-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Elec.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(Elec.ts) ~ Time + I(Time^2) + factor(Imth))
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.087594 -0.022203 -0.000396  0.020059  0.104350 
+
+Coefficients:
+                 Estimate Std. Error  t value Pr(&gt;|t|)    
+(Intercept)     7.271e+00  7.130e-03 1019.786  &lt; 2e-16 ***
+Time            7.960e-03  5.603e-05  142.070  &lt; 2e-16 ***
+I(Time^2)      -6.883e-06  1.367e-07  -50.359  &lt; 2e-16 ***
+factor(Imth)2  -1.991e-02  7.826e-03   -2.544  0.01134 *  
+factor(Imth)3   6.598e-02  7.826e-03    8.430 7.14e-16 ***
+factor(Imth)4   3.288e-02  7.826e-03    4.201 3.31e-05 ***
+factor(Imth)5   1.462e-01  7.826e-03   18.687  &lt; 2e-16 ***
+factor(Imth)6   1.777e-01  7.826e-03   22.711  &lt; 2e-16 ***
+factor(Imth)7   2.375e-01  7.826e-03   30.344  &lt; 2e-16 ***
+factor(Imth)8   1.994e-01  7.827e-03   25.477  &lt; 2e-16 ***
+factor(Imth)9   1.074e-01  7.827e-03   13.719  &lt; 2e-16 ***
+factor(Imth)10  9.044e-02  7.827e-03   11.555  &lt; 2e-16 ***
+factor(Imth)11  4.278e-02  7.827e-03    5.465 8.35e-08 ***
+factor(Imth)12  2.350e-02  7.828e-03    3.002  0.00286 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.03179 on 382 degrees of freedom
+Multiple R-squared:  0.9974,    Adjusted R-squared:  0.9973 
+F-statistic: 1.117e+04 on 13 and 382 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">resid</span>(Elec.lm))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">decompose</span>(Elec.ts))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/unnamed-chunk-16-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Formando un bucle para elegir el mejor ARMA(p,q) de los residuos</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>mejor.combi <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>mejor.aic<span class="ot">&lt;-</span><span class="cn">Inf</span></span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">2</span>) <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">2</span>){</span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>  ajust.aic<span class="ot">&lt;-</span><span class="fu">AIC</span>(<span class="fu">arima</span>(<span class="fu">resid</span>(Elec.lm), <span class="at">order =</span> <span class="fu">c</span>(i,<span class="dv">0</span>,j)))</span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (ajust.aic<span class="sc">&lt;</span>mejor.aic){</span>
+<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a>    mejor.combi<span class="ot">&lt;-</span><span class="fu">c</span>(i,<span class="dv">0</span>,j)</span>
+<span id="cb115-7"><a href="#cb115-7" aria-hidden="true" tabindex="-1"></a>    mejor.arma <span class="ot">&lt;-</span><span class="fu">arima</span>(<span class="fu">resid</span>(Elec.lm), <span class="at">order =</span> mejor.combi)</span>
+<span id="cb115-8"><a href="#cb115-8" aria-hidden="true" tabindex="-1"></a>    mejor.aic<span class="ot">&lt;-</span>ajust.aic</span>
+<span id="cb115-9"><a href="#cb115-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb115-10"><a href="#cb115-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb115-11"><a href="#cb115-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-12"><a href="#cb115-12" aria-hidden="true" tabindex="-1"></a>mejor.combi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2 0 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>mejor.arma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+arima(x = resid(Elec.lm), order = mejor.combi)
+
+Coefficients:
+         ar1     ar2  intercept
+      0.5277  0.2602     0.0012
+s.e.  0.0487  0.0488     0.0050
+
+sigma^2 estimated as 0.0004559:  log likelihood = 960.96,  aic = -1913.91</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">resid</span>(mejor.arma))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/Bucle-ARMA-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(mejor.arma,</span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"Mejor modelo ARMA para pronosticar Elec.ts"</span>,</span>
+<span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits =</span> <span class="dv">3</span>,</span>
+<span id="cb120-5"><a href="#cb120-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">type =</span> <span class="st">"text"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Mejor modelo ARMA para pronosticar Elec.ts
+=============================================
+                      Dependent variable:    
+                  ---------------------------
+                             resid           
+---------------------------------------------
+ar1                        0.528***          
+                            (0.049)          
+                                             
+ar2                        0.260***          
+                            (0.049)          
+                                             
+intercept                    0.001           
+                            (0.005)          
+                                             
+---------------------------------------------
+Observations                  396            
+Log Likelihood              960.955          
+sigma2                      0.0005           
+Akaike Inf. Crit.         -1,913.910         
+=============================================
+Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+</div>
+</div>
+<p>El objetivo de estos modelos es el pronóstico</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>nuevo.tiempo <span class="ot">&lt;-</span><span class="fu">seq</span>(<span class="fu">length</span>(Elec.ts), <span class="at">length =</span> <span class="dv">36</span>)</span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>nuevos.datos <span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">Time =</span> nuevo.tiempo, <span class="at">Imth =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="dv">3</span>))</span>
+<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a>prediccion.lm <span class="ot">&lt;-</span><span class="fu">predict</span>(Elec.lm, nuevos.datos)</span>
+<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>prediccion.arma <span class="ot">&lt;-</span><span class="fu">predict</span>(mejor.arma, <span class="at">n.ahead =</span> <span class="dv">36</span>)</span>
+<span id="cb122-6"><a href="#cb122-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-7"><a href="#cb122-7" aria-hidden="true" tabindex="-1"></a>elec.pred<span class="ot">&lt;-</span><span class="fu">ts</span>(<span class="fu">exp</span>(prediccion.lm<span class="sc">+</span>prediccion.arma<span class="sc">$</span>pred), <span class="at">start =</span> <span class="dv">1991</span>, <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb122-8"><a href="#cb122-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-9"><a href="#cb122-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(<span class="fu">cbind</span>(Elec.ts, elec.pred), <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capt1_files/figure-html/pronostico-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Lo que se tiene que advertir aquí es que la influencia de la parte de las medias móviles solo se da hasta el orden del proceso <strong>(q)</strong>. A partir de ahí el pronóstico dependerá íntegramente en los pronósticos generados por el modelo <strong>AR</strong>.</p>
+</section>
+<section id="pronosticos" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Pronosticos</h1>
+</section>
+<section id="evaluación-de-los-pronósticos" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Evaluación de los pronósticos</h1>
+<p>Para determinar si un pronóstico es adecuado, se usan los estadísticos que se presentan a continuación. La idea general de todos estos estadísticos es que comparan los valores reales con aquellos que han sido pronosticados. Ahora bien, como los errores pueden ser positivos o negativos, la simple suma de ellos no sería de gran ayuda puesto que se cancelarían entre ellos. Es por eso que los índices trabajan ya sea con los errores al cuadrado o con el valor absoluto de los errores.</p>
+<p>Normalmente se utilizan estos estadísticos como elementos de comparación con los pronósticos de otros modelos. Se asume que el mejor modelo es aquel que tiene los estadísticos con los menores valores.</p>
+<p>Si se está en el periodo <span class="math inline">\(t\)</span> y se desea hacer pronósticos <span class="math inline">\(r\)</span> periodos adelante, se emplea alguno de los indicadores que se analizan a continuación:</p>
+<section id="la-media-de-los-errores-al-cuadrado-mean-square-error-mse" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="la-media-de-los-errores-al-cuadrado-mean-square-error-mse"><span class="header-section-number">11.1</span> La media de los errores al cuadrado (Mean Square Error-MSE)</h2>
+<p><span class="math display">\[MSE=\frac{\Sigma_{j=t+i}^{t+r}(y_j-g_{t,j})^2}{r} [93]\]</span> Donde <span class="math inline">\(y_j\)</span> es el valor observado de los datos y, <span class="math inline">\(g_{t,j}\)</span> es el valor del pronóstico. Por lo general se usa la ráiz del MSE a la que se denomina como la raíz de la media de los errores al cuadradro (<strong>RMSE</strong>)</p>
+<p><span class="math display">\[RMSE=\sqrt{\frac{\Sigma_{j=t+1}^{t+r}(y_j-g_{t,j})^2}{r}} [94]\]</span></p>
+</section>
+<section id="la-media-absoluta-de-los-errores-mean-absolute-error-mae" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="la-media-absoluta-de-los-errores-mean-absolute-error-mae"><span class="header-section-number">11.2</span> La media absoluta de los errores (Mean Absolute Error-MAE)</h2>
+<p><span class="math display">\[MAE=\frac{\Sigma_{j=t+1}^{t+r}|y_j-g_{t,j}|}{r} [95]\]</span></p>
+</section>
+<section id="la-media-absoluta-de-errores-porcentuales-mean-absolute-percentage-error-mape" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="la-media-absoluta-de-errores-porcentuales-mean-absolute-percentage-error-mape"><span class="header-section-number">11.3</span> La media absoluta de errores porcentuales (Mean Absolute Percentage Error-MAPE)</h2>
+<p>El MAPE representa el cambio porcentual de los errores, por lo que su valor se encontrará siempre entre [0,1]. Tomará el valor de 1 cuando el pronóstico provenga de un modelo de camino aleatorio (<span class="math inline">\(p_t=p_{t-1}+\epsilon_t\)</span>), es decir, cuando el pronóstico el pronóstico <span class="math inline">\(g_{t,j}\)</span> sea igual a cero. Por lo tanto, si el <span class="math inline">\(MAPE&lt;1\)</span>, esto indicará que los pronósticos realizados son mejores que los efectuados con el modelo de camino aleatorio.</p>
+<p><span class="math display">\[MAPE=\frac{\Sigma_{j=t+1}^{t+r}|\frac{y_j-g_{t,j}}{g_{t,j}}|}{r}\times 100[96]\]</span> ## El coeficiente de desigualdad de Theil (Theil Inequality Coefficient)</p>
+<p>Este coeficiente mide las ganancias (en términos de pronósticos) de un modelo cualquiera con respecto a un modelo base, que usualmente es el modelo de caminos aleatorios. Si este coeficiente toma un valor menor (mayor) que 1, significará que el modelo que se está usando es mejor (peor) que el modelo base.</p>
+<p><span class="math display">\[Theil=\sqrt{\Sigma_{j=t+1}^{t+r}\frac{(\frac{y_j-g_{t,j}}{y_j})^2}{(\frac{y_j-g_{t,j}^b}{y_j})^2}} [97]\]</span> ## Descomposición de los errores de predicción</p>
+<p>El MSE puede ser descompuesto de la siguiente manera:</p>
+<p><span class="math display">\[MSE=\frac{\Sigma_{j=t+1}^{t+r}(y_j-g_{t,j})^2}{r}=(\frac{\Sigma_{j=t+1}^{t+r}g_{t,j}^2}{r}-\bar{y})^2+(s_y-s_g)^2+(2)\times(1-\rho)\times(s_gs_y) [98]\]</span> Donde <span class="math inline">\(\bar{y}\)</span> es la media de las observaciones en el periodo pronosticado, <span class="math inline">\(s_y\)</span> y <span class="math inline">\(s_g\)</span> son desviaciones estándar de las observaciones y de los pronósticos, respectivamente y, <span class="math inline">\(\rho\)</span> representa el coeficiente de correlación entre las observaciones y sus pronósticos</p>
+<p>El primer elemento de la mano derecha de la ecuación es conocido como el <strong>componente de insesgamiento</strong>, el segundo como el <strong>componente de la varianza</strong> y el último término como el <strong>componente de correlación</strong>. Como siempre, se espera que los pronósticos sean insesgados y eficientes, y para un buen pronóstico es que sus componentes de insesgamiento y varianza sean pequeños comparados con el último componente de correlación.</p>
+</section>
+</section>
+<section id="metodología-de-box-jenkings" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> Metodología de Box-Jenkings</h1>
+<p>Esta metodología fue desarrollada por Box &amp; Jenkins. La metodología sigue los siguientes pasos:</p>
+<ul>
+<li><p>Determinar el modelo y el orden de los mismos que mejor se ajusta a los datos. Para ello se utilizan los métodos gráficos y los criterios de información presentados anteriormente.</p></li>
+<li><p>Estimar el modelo seleccionado, es decir, estimar los coeficientes del modelo seleccionado en el paso anterior.</p></li>
+<li><p>Verificar si el modelo seleccionado en el paso anterior es adecuado. Para esto existen dos métodos:</p>
+<pre><code>  + el primero consiste en crear un modelo con más rezagos que los 
+  identificados en el paso previo y verificar que los rezagos extra no
+  son estadísticamente significativos. 
+
+  + El segundo método consiste en analizar los residuos del modelo 
+  seleccionado. Si el modelo seleccionado captura adecuadamente la 
+  dinámica de la variable, los errores deberían ser ruidos blancos, es 
+  decir deberían ser no autocorrelacionados. Esto se puede probar mediante
+  la prueba de Ljung-Box.</code></pre></li>
+<li><p>Realizar inferencias y pronósticos con el modelo estimado.</p></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./intro.html" class="pagination-link" aria-label="Introduction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./summary.html" class="pagination-link" aria-label="Summary">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
