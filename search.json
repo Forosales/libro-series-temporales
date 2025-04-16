@@ -12,41 +12,51 @@
   {
     "objectID": "intro.html",
     "href": "intro.html",
-    "title": "1  Introduction",
+    "title": "1  Introducción",
     "section": "",
-    "text": "1.1 Partes de una serie temporal\nToda serie temporal o serie de tiempo exhibe tres partes, la tendencia, la estacionalidad y los errores como la parte estocástica\n\\[y_t= Tendencia + Estacionalidad+residuos\\]\n# Descomponer a la serie\n\nplot(decompose(AirPassengers))\nSeries temporales: datos registrados para una única entidad individual para diferentes momentos de tiempo\nLas ST o TS son útiles para responder preguntas causales para las que los datos de sección cruzada son inadecuados\nPredicción y Modelos Autorregresivos en Series Temporales En el análisis económico y de datos, una de las distinciones fundamentales es la que existe entre la predicción y la estimación de efectos causales. Mientras que la inferencia causal busca responder preguntas del tipo “¿qué pasaría si…?”, la predicción se enfoca simplemente en anticipar eventos futuros a partir de la información disponible en el presente. Esta diferencia, aunque sutil en apariencia, tiene profundas implicaciones metodológicas y conceptuales.\nUn ejemplo ilustrativo lo encontramos al observar a los peatones con paraguas en la calle. Un modelo predictivo podría señalar con gran precisión que lloverá pronto si se observa esta escena. Sin embargo, el uso del paraguas no causa la lluvia. Aquí se hace evidente que un modelo puede tener alto poder predictivo sin que sus variables tengan interpretaciones causales. Esta distinción es esencial en nuestra aproximación al análisis de series temporales, especialmente cuando nuestro objetivo es predecir sucesos futuros más que identificar relaciones estructurales.\nDesafíos de las Series Temporales El trabajo con datos de series temporales conlleva desafíos únicos. A diferencia de los datos de sección cruzada, en donde se analizan múltiples unidades en un solo punto del tiempo, las series temporales se enfocan en la evolución de una sola unidad a lo largo del tiempo. Esto introduce una dimensión dinámica y secuencial que exige nuevas técnicas y supuestos. Por ejemplo, la autocorrelación —la relación entre los valores presentes y pasados de la misma variable— puede violar los supuestos clásicos de independencia de errores, lo que invalida el uso directo de muchos métodos estadísticos tradicionales.",
+    "text": "1.1 Partes de una serie temporal\nToda serie temporal o serie de tiempo exhibe tres partes, la tendencia, la estacionalidad y los errores como la parte estocástica\n\\[y_t= Tendencia + Estacionalidad+residuos\\]\n# Descomponer a la serie\n\nplot(decompose(AirPassengers))\nSeries temporales: datos registrados para una única entidad individual para diferentes momentos de tiempo\nLas ST o TS son útiles para responder preguntas causales para las que los datos de sección cruzada son inadecuados",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introducción</span>"
     ]
   },
   {
     "objectID": "intro.html#partes-de-una-serie-temporal",
     "href": "intro.html#partes-de-una-serie-temporal",
-    "title": "1  Introduction",
+    "title": "1  Introducción",
     "section": "",
     "text": "¿Cuál es el efecto de un cambio legislativo cuando el cambio se produce y en el futuro?\n¿Cuál es la mejor predicción de una variable en una fecha futura?",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introducción</span>"
+    ]
+  },
+  {
+    "objectID": "intro.html#predicción-y-modelos-autorregresivos-en-series-temporales",
+    "href": "intro.html#predicción-y-modelos-autorregresivos-en-series-temporales",
+    "title": "1  Introducción",
+    "section": "1.2 Predicción y Modelos Autorregresivos en Series Temporales",
+    "text": "1.2 Predicción y Modelos Autorregresivos en Series Temporales\nEn el análisis económico y de datos, una de las distinciones fundamentales es la que existe entre la predicción y la estimación de efectos causales. Mientras que la inferencia causal busca responder preguntas del tipo “¿qué pasaría si…?”, la predicción se enfoca simplemente en anticipar eventos futuros a partir de la información disponible en el presente. Esta diferencia, aunque sutil en apariencia, tiene profundas implicaciones metodológicas y conceptuales.\nUn ejemplo ilustrativo lo encontramos al observar a los peatones con paraguas en la calle. Un modelo predictivo podría señalar con gran precisión que lloverá pronto si se observa esta escena. Sin embargo, el uso del paraguas no causa la lluvia. Aquí se hace evidente que un modelo puede tener alto poder predictivo sin que sus variables tengan interpretaciones causales. Esta distinción es esencial en nuestra aproximación al análisis de series temporales, especialmente cuando nuestro objetivo es predecir sucesos futuros más que identificar relaciones estructurales.\nDesafíos de las Series Temporales El trabajo con datos de series temporales conlleva desafíos únicos. A diferencia de los datos de sección cruzada, en donde se analizan múltiples unidades en un solo punto del tiempo, las series temporales se enfocan en la evolución de una sola unidad a lo largo del tiempo. Esto introduce una dimensión dinámica y secuencial que exige nuevas técnicas y supuestos. Por ejemplo, la autocorrelación —la relación entre los valores presentes y pasados de la misma variable— puede violar los supuestos clásicos de independencia de errores, lo que invalida el uso directo de muchos métodos estadísticos tradicionales.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introducción</span>"
     ]
   },
   {
     "objectID": "intro.html#modelos-predictivos-sin-interpretación-causal",
     "href": "intro.html#modelos-predictivos-sin-interpretación-causal",
-    "title": "1  Introduction",
-    "section": "1.2 Modelos Predictivos sin Interpretación Causal",
-    "text": "1.2 Modelos Predictivos sin Interpretación Causal\nUn modelo de regresión aplicado a datos de sección cruzada puede ser útil para predecir una variable de interés, incluso si no permite inferencias causales válidas. Esto es particularmente relevante cuando el objetivo práctico es simplemente anticipar resultados futuros. En este semestre, nos enfocaremos justamente en esa tarea: utilizar series temporales para la predicción de sucesos futuros, empleando únicamente la información disponible hasta el presente.\nUna estrategia natural en este contexto es usar los valores presentes y pasados de una variable para predecir sus valores futuros. Este razonamiento nos lleva directamente a los modelos autorregresivos (AR), que ocupan un lugar central en la literatura de series temporales. En su forma más simple, un modelo AR usa una combinación lineal de los valores pasados de la propia variable como predictores. Por ejemplo, un modelo AR(1) sugiere que el valor actual de la serie depende linealmente de su valor en el periodo anterior.\nEstos modelos pueden ser además enriquecidos con variables predictoras adicionales, dando lugar a modelos como el ARX (autorregresivo con variables exógenas), lo cual incrementa su poder predictivo. Es importante recalcar que, aunque estos modelos pueden ser extremadamente precisos en sus predicciones, no implican relaciones causales entre las variables.",
+    "title": "1  Introducción",
+    "section": "1.3 Modelos Predictivos sin Interpretación Causal",
+    "text": "1.3 Modelos Predictivos sin Interpretación Causal\nUn modelo de regresión aplicado a datos de sección cruzada puede ser útil para predecir una variable de interés, incluso si no permite inferencias causales válidas. Esto es particularmente relevante cuando el objetivo práctico es simplemente anticipar resultados futuros. En este semestre, nos enfocaremos justamente en esa tarea: utilizar series temporales para la predicción de sucesos futuros, empleando únicamente la información disponible hasta el presente.\nUna estrategia natural en este contexto es usar los valores presentes y pasados de una variable para predecir sus valores futuros. Este razonamiento nos lleva directamente a los modelos autorregresivos (AR), que ocupan un lugar central en la literatura de series temporales. En su forma más simple, un modelo AR usa una combinación lineal de los valores pasados de la propia variable como predictores. Por ejemplo, un modelo AR(1) sugiere que el valor actual de la serie depende linealmente de su valor en el periodo anterior.\nEstos modelos pueden ser además enriquecidos con variables predictoras adicionales, dando lugar a modelos como el ARX (autorregresivo con variables exógenas), lo cual incrementa su poder predictivo. Es importante recalcar que, aunque estos modelos pueden ser extremadamente precisos en sus predicciones, no implican relaciones causales entre las variables.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introducción</span>"
     ]
   },
   {
     "objectID": "intro.html#la-importancia-de-la-visualización-y-la-estacionariedad",
     "href": "intro.html#la-importancia-de-la-visualización-y-la-estacionariedad",
-    "title": "1  Introduction",
-    "section": "1.3 La Importancia de la Visualización y la Estacionariedad",
-    "text": "1.3 La Importancia de la Visualización y la Estacionariedad\nUna primera herramienta clave en el análisis de series temporales es la representación gráfica de los datos. Visualizar la serie nos permite detectar patrones como tendencias, estacionalidades, rupturas estructurales y otros comportamientos relevantes. Esta etapa exploratoria es fundamental para decidir qué tipo de modelo puede ajustarse mejor a los datos.\nAdemás, el análisis de series temporales debe distinguir entre dos grandes clases de modelos: estacionarios y no estacionarios. Una serie es estacionaria cuando sus propiedades estadísticas —como la media, la varianza y la autocorrelación— son constantes en el tiempo. En contraste, las series no estacionarias presentan cambios estructurales que pueden sesgar las estimaciones y predicciones si no se tratan adecuadamente. Por tanto, entender qué es una serie temporal en términos matemáticos y estadísticos es un primer paso indispensable antes de proceder a cualquier modelado.\n\n\n\n\nStock, James H, y Marck M. Watson. 2012. Introducción a la econometría. Madrid (España): Pearson. http://www.ebooks7-24.com/?il=3445.\n\n\nWooldridge, Jeffrey M. 2009. Introductory econometrics: a modern approach. 4th ed. Mason, OH: South Western, Cengage Learning.",
+    "title": "1  Introducción",
+    "section": "1.4 La Importancia de la Visualización y la Estacionariedad",
+    "text": "1.4 La Importancia de la Visualización y la Estacionariedad\nUna primera herramienta clave en el análisis de series temporales es la representación gráfica de los datos. Visualizar la serie nos permite detectar patrones como tendencias, estacionalidades, rupturas estructurales y otros comportamientos relevantes. Esta etapa exploratoria es fundamental para decidir qué tipo de modelo puede ajustarse mejor a los datos.\nAdemás, el análisis de series temporales debe distinguir entre dos grandes clases de modelos: estacionarios y no estacionarios. Una serie es estacionaria cuando sus propiedades estadísticas —como la media, la varianza y la autocorrelación— son constantes en el tiempo. En contraste, las series no estacionarias presentan cambios estructurales que pueden sesgar las estimaciones y predicciones si no se tratan adecuadamente. Por tanto, entender qué es una serie temporal en términos matemáticos y estadísticos es un primer paso indispensable antes de proceder a cualquier modelado.\n\n\n\n\nStock, James H, y Marck M. Watson. 2012. Introducción a la econometría. Madrid (España): Pearson. http://www.ebooks7-24.com/?il=3445.\n\n\nWooldridge, Jeffrey M. 2009. Introductory econometrics: a modern approach. 4th ed. Mason, OH: South Western, Cengage Learning.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introducción</span>"
     ]
   },
   {

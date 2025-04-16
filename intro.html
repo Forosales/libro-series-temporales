@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>1&nbsp; Introduction – Guía de Series de Tiempo</title>
+<title>1&nbsp; Introducción – Guía de Series de Tiempo</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -164,7 +164,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
@@ -198,7 +198,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -230,8 +230,9 @@ window.Quarto = {
    
   <ul>
   <li><a href="#partes-de-una-serie-temporal" id="toc-partes-de-una-serie-temporal" class="nav-link active" data-scroll-target="#partes-de-una-serie-temporal"><span class="header-section-number">1.1</span> Partes de una serie temporal</a></li>
-  <li><a href="#modelos-predictivos-sin-interpretación-causal" id="toc-modelos-predictivos-sin-interpretación-causal" class="nav-link" data-scroll-target="#modelos-predictivos-sin-interpretación-causal"><span class="header-section-number">1.2</span> Modelos Predictivos sin Interpretación Causal</a></li>
-  <li><a href="#la-importancia-de-la-visualización-y-la-estacionariedad" id="toc-la-importancia-de-la-visualización-y-la-estacionariedad" class="nav-link" data-scroll-target="#la-importancia-de-la-visualización-y-la-estacionariedad"><span class="header-section-number">1.3</span> La Importancia de la Visualización y la Estacionariedad</a></li>
+  <li><a href="#predicción-y-modelos-autorregresivos-en-series-temporales" id="toc-predicción-y-modelos-autorregresivos-en-series-temporales" class="nav-link" data-scroll-target="#predicción-y-modelos-autorregresivos-en-series-temporales"><span class="header-section-number">1.2</span> Predicción y Modelos Autorregresivos en Series Temporales</a></li>
+  <li><a href="#modelos-predictivos-sin-interpretación-causal" id="toc-modelos-predictivos-sin-interpretación-causal" class="nav-link" data-scroll-target="#modelos-predictivos-sin-interpretación-causal"><span class="header-section-number">1.3</span> Modelos Predictivos sin Interpretación Causal</a></li>
+  <li><a href="#la-importancia-de-la-visualización-y-la-estacionariedad" id="toc-la-importancia-de-la-visualización-y-la-estacionariedad" class="nav-link" data-scroll-target="#la-importancia-de-la-visualización-y-la-estacionariedad"><span class="header-section-number">1.4</span> La Importancia de la Visualización y la Estacionariedad</a></li>
   </ul>
 </nav>
     </div>
@@ -240,7 +241,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></h1>
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción</span></h1>
 </div>
 
 
@@ -317,18 +318,21 @@ window.Quarto = {
 <li><p>¿Cuál es el efecto de un cambio legislativo cuando el cambio se produce y en el futuro?</p></li>
 <li><p>¿Cuál es la mejor predicción de una variable en una fecha futura?</p></li>
 </ul>
-<p>Predicción y Modelos Autorregresivos en Series Temporales En el análisis económico y de datos, una de las distinciones fundamentales es la que existe entre la predicción y la estimación de efectos causales. Mientras que la inferencia causal busca responder preguntas del tipo “¿qué pasaría si…?”, la predicción se enfoca simplemente en anticipar eventos futuros a partir de la información disponible en el presente. Esta diferencia, aunque sutil en apariencia, tiene profundas implicaciones metodológicas y conceptuales.</p>
+</section>
+<section id="predicción-y-modelos-autorregresivos-en-series-temporales" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="predicción-y-modelos-autorregresivos-en-series-temporales"><span class="header-section-number">1.2</span> Predicción y Modelos Autorregresivos en Series Temporales</h2>
+<p>En el análisis económico y de datos, una de las distinciones fundamentales es la que existe entre la predicción y la estimación de efectos causales. Mientras que la inferencia causal busca responder preguntas del tipo “¿qué pasaría si…?”, la predicción se enfoca simplemente en anticipar eventos futuros a partir de la información disponible en el presente. Esta diferencia, aunque sutil en apariencia, tiene profundas implicaciones metodológicas y conceptuales.</p>
 <p>Un ejemplo ilustrativo lo encontramos al observar a los peatones con paraguas en la calle. Un modelo predictivo podría señalar con gran precisión que lloverá pronto si se observa esta escena. Sin embargo, el uso del paraguas no causa la lluvia. Aquí se hace evidente que un modelo puede tener alto poder predictivo sin que sus variables tengan interpretaciones causales. Esta distinción es esencial en nuestra aproximación al análisis de series temporales, especialmente cuando nuestro objetivo es predecir sucesos futuros más que identificar relaciones estructurales.</p>
 <p>Desafíos de las Series Temporales El trabajo con datos de series temporales conlleva desafíos únicos. A diferencia de los datos de sección cruzada, en donde se analizan múltiples unidades en un solo punto del tiempo, las series temporales se enfocan en la evolución de una sola unidad a lo largo del tiempo. Esto introduce una dimensión dinámica y secuencial que exige nuevas técnicas y supuestos. Por ejemplo, la autocorrelación —la relación entre los valores presentes y pasados de la misma variable— puede violar los supuestos clásicos de independencia de errores, lo que invalida el uso directo de muchos métodos estadísticos tradicionales.</p>
 </section>
-<section id="modelos-predictivos-sin-interpretación-causal" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="modelos-predictivos-sin-interpretación-causal"><span class="header-section-number">1.2</span> Modelos Predictivos sin Interpretación Causal</h2>
+<section id="modelos-predictivos-sin-interpretación-causal" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="modelos-predictivos-sin-interpretación-causal"><span class="header-section-number">1.3</span> Modelos Predictivos sin Interpretación Causal</h2>
 <p>Un modelo de regresión aplicado a datos de sección cruzada puede ser útil para predecir una variable de interés, incluso si no permite inferencias causales válidas. Esto es particularmente relevante cuando el objetivo práctico es simplemente anticipar resultados futuros. En este semestre, nos enfocaremos justamente en esa tarea: utilizar series temporales para la predicción de sucesos futuros, empleando únicamente la información disponible hasta el presente.</p>
 <p>Una estrategia natural en este contexto es usar los valores presentes y pasados de una variable para predecir sus valores futuros. Este razonamiento nos lleva directamente a los modelos autorregresivos (AR), que ocupan un lugar central en la literatura de series temporales. En su forma más simple, un modelo AR usa una combinación lineal de los valores pasados de la propia variable como predictores. Por ejemplo, un modelo AR(1) sugiere que el valor actual de la serie depende linealmente de su valor en el periodo anterior.</p>
 <p>Estos modelos pueden ser además enriquecidos con variables predictoras adicionales, dando lugar a modelos como el ARX (autorregresivo con variables exógenas), lo cual incrementa su poder predictivo. Es importante recalcar que, aunque estos modelos pueden ser extremadamente precisos en sus predicciones, no implican relaciones causales entre las variables.</p>
 </section>
-<section id="la-importancia-de-la-visualización-y-la-estacionariedad" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="la-importancia-de-la-visualización-y-la-estacionariedad"><span class="header-section-number">1.3</span> La Importancia de la Visualización y la Estacionariedad</h2>
+<section id="la-importancia-de-la-visualización-y-la-estacionariedad" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="la-importancia-de-la-visualización-y-la-estacionariedad"><span class="header-section-number">1.4</span> La Importancia de la Visualización y la Estacionariedad</h2>
 <p>Una primera herramienta clave en el análisis de series temporales es la representación gráfica de los datos. Visualizar la serie nos permite detectar patrones como tendencias, estacionalidades, rupturas estructurales y otros comportamientos relevantes. Esta etapa exploratoria es fundamental para decidir qué tipo de modelo puede ajustarse mejor a los datos.</p>
 <p>Además, el análisis de series temporales debe distinguir entre dos grandes clases de modelos: estacionarios y no estacionarios. Una serie es estacionaria cuando sus propiedades estadísticas —como la media, la varianza y la autocorrelación— son constantes en el tiempo. En contraste, las series no estacionarias presentan cambios estructurales que pueden sesgar las estimaciones y predicciones si no se tratan adecuadamente. Por tanto, entender qué es una serie temporal en términos matemáticos y estadísticos es un primer paso indispensable antes de proceder a cualquier modelado.</p>
 
